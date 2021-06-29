@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+{%load static%}
+{% block head %}
+
+<title>Le planning annuel</title>
+<style>
+ 
+</style>
+
+  
+{% endblock %}
+
+{% block body %}
+
+<a href="/home"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+
+<center>
+  <h4 style="font-size:40px ;font-family: 'Josefin Sans', sans-serif;" class="title-5 ml-5 mt-3 text-center">Le planning
+    hebdomadaire de 2021</h4>
+</center>
+
+<form method="post" action="" id="form">
+  {% csrf_token %}
+  <div>
+    <h6>Choisir le type des équipements :</h6>
+    <div class="row form-group">
+
+      <div class="col-2 col-md-2">
+        <select class="form-control custom-select" id="types" name="type">
+          <option value=""></option>
+          <option value="Moule">Moule</option>
+          <option value="Machine">Machine</option>
+          <option value="Périphérique">Pérépherique</option>
+
+        </select>
+      </div>
+    </div>
+    
+    <div>
+    <h6>Choisir la semaine de planning :</h6>
+    <div class="row form-group">
+
+      <div class="col-2 col-md-2">
+     <input type="week" class="form-control"  name="semaine">
+      </div>
+    </div>
+  </div>
+  <button id="cherche"><input type="submit" value="chercher" class="btn btn-primary btn-sm"></button><br>
+</form>
+
+<div class="container  " style="    width: 15cm;
+    float: right;
+    margin-right: -286px;">
+  <div class="row">
+    <div class="col-6 col-sm-3"><i style="color:#ffff4d" class="fas fa-square"></i> Mensuelle</div>
+    <div class="col-6 col-sm-3"><i style="color:#ff4d4d" class="fas fa-square"></i> Annuelle</div>
+
+    <!-- Force next columns to break to new line -->
+    <div class="w-100"></div>
+
+    <div class="col-6 col-sm-3"><i style="color:lightblue" class="fas fa-square"></i> Semestrielle</div>
+    <div class="col-6 col-sm-3"><i style="color:lightgreen" class="fas fa-square"></i> Trimestrielle</div>
+  </div>
+</div>
+<center>
+<div id="test" class="mt-3">
+    <div class="col-md-4 " id="cal" >
+<h6>Le planning de semaine :<b> {{b}} </b>pour les : <b> {{a}}s </b>  </h6>
+
+      <table id="MyTable" class="table " style="display: block-inline; margin-top:1cm ;">
+        <thead class="table-secondary " style="border: 1px solid black">
+          <tr >
+            <th style="border: 1px solid black">Equipement</th>
+            <th style="border: 1px solid black">Maintenance</th>
+          </tr>
+        </thead>
+        <tbody id="equipements-data-box">
+ 
+          {% for key, value in context.items %}
+          
+          <tr class="ttr" style="border:1px solid black">
+            <th scope="row" style="border:1px solid black" class="key"> {{ key }} </th>
+
+       
+            {% for val in  value %}
+            <td style="border: 1px solid black;   {% if val.intervalle_maintenance == 'Mensuelle' %}background-color:#ffff4d{%endif%}{% if val.intervalle_maintenance == 'Annuelle'%}background-color:#ff4d4d{%endif%}{% if val.intervalle_maintenance == 'Semestrielle'%}background-color:lightblue{%endif%} {% if val.intervalle_maintenance == 'Trimestrielle'%}background-color:lightgreen{%endif%} "
+>{{val.intervalle_maintenance}}</td>
+        
+
+
+            {% endfor %}
+          </tr>
+          {% endfor %}
+
+        </tbody>
+
+      </table>
+    </div>
+    <table id="calendar" class="table table-bordered " style="display: none;  margin-top:1cm ">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="4">Jan</th>
+          <th colspan="4">Fev</th>
+          <th colspan="4">Mar</th>
+          <th colspan="4">Avr</th>
+          <th colspan="4">May</th>
+          <th colspan="4">Juin</th>
+          <th colspan="4">Juil</th>
+          <th colspan="4">Aout</th>
+          <th colspan="4">Sep</th>
+          <th colspan="4">Oct</th>
+          <th colspan="4">Nov</th>
+          <th colspan="4">Dec</th>
+
+        </tr>
+        <tr>
+          <td></td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+
+        </tr>
+      </thead>
+      <tbody id="planning">
+        {% comment %} <div style="display:none ; width:10%" id="content">
+          <select class="form-group custom-select" id="intervalle" onchange="getval(this);"
+            name="intervalle_maintenanceC">
+            <option></option>
+            <option style="background-color:rgb(219, 154, 147)" value="Annuelle">Annuelle</option>
+            <option style="background-color:lightgreen" value="Trimestrielle">Trimestrielle</option>
+            <option style="background-color:lightblue" value="Semestrielle">Semestrielle</option>
+            <option style="background-color:rgb(255, 244, 163)" value="Mensuelle">Mensuelle</option>
+          </select>
+
+
+        </div> {% endcomment %}
+
+        <div class="modal fade" id="modal-type" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+
+              <form method="post" action="" class="create-form">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                  <h5 class="modal-title">Choisir l'intervalle de maintenance</h5>
+                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <select class="form-group custom-select" style="width:150px" id="intervalle" onchange="getval(this);"
+                    name="intervalle_maintenanceC">
+                    <option></option>
+                    <option value="Annuelle"><span style="color:rgb(219, 154, 147)">&#9634;</span>Annuelle</option>
+                    <option value="Trimestrielle"><span style="background-color:lightblue">&#9632;</span>Trimestrielle
+                      <i style="color:lightgreen" class="fas fa-square"></i>
+                    </option>
+                    <option value="Semestrielle"><span style="background-color:lightblue">&#9632;</span> Semestrielle
+                    </option>
+                    <option value="Mensuelle"><span style="background-color:rgb(255, 244, 163)">&#9632;</span> Mensuelle
+                    </option>
+                  </select>
+                </div>
+                <div class="modal-footer">
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </tbody>
+
+    </table>
+
+  </div>
+</center>
+
+  {% comment %} {{ context|json_script:"context" }} {% endcomment %}
+  {% endblock %}
+  {% block script %}
+  <link rel=”stylesheet” href=”http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css”> <script
+    src=”http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js”> </script> <script
+    src=”js/selectr/selectr.js”> </script> 
+<script id="context">
+  //type et ref des equipements
+  const typesDataBox = document.getElementById("types-data-box")
+  const typeInput = document.getElementById('types')
+  const form = document.getElementById('form')
+  const equipementsDataBox = document.getElementById("equipements-data-box")
+  const cherche = document.getElementById('cherche')
+
+  const equipementText = document.getElementById('equipement-text')
+  const table = document.getElementById("MyTable");
+  const calendar = document.getElementById("calendar");
+  const planning = document.getElementById("planning");
+  const td2 = document.getElementById('2');
+  var context = `{{ context|safe }}`
+  console.log(context)
+
+  function getval(sel)
+  {
+  return sel.value;
+  }
+  var keysArray = [];
+  const key = document.getElementsByClassName('key').innerText
+  $('#MyTable > tbody').find('tr').each(function() {
+  var keys = $(this).find('td')[0].innerText
+  keysArray.push(keys)
+
+  console.log(keys)
+  });
+
+
+  /*const data = JSON.parse(document.getElementById('context').textContent);
+  var j=1;
+  var Mytable ;
+  for (var i = 0; i < table.length; i++) { // Get the ith table var Mytable=table[i]; // Set the id dynamically
+    Mytable.setAttribute("id", i + 1); // The line below will also give id // dynamically to the tables //table.id=i+1;
+    }*/ for (var i=0; i<table.rows.length ; i++ ) { const option=document.createElement('tr') let row=table.rows[i] /*
+    console.log('row :') console.log(row.cells[2].innerText)*/ option.innerHTML=`<th scope="row" name="ref_equipementC">
+    ${keysArray[i]} </th>
+    <td class='1' data-bs-toggle="modal" data-bs-target="#modal-type"></td>
+    <td class='2' data-bs-toggle="modal" data-bs-target="#modal-type"></td>
+    <td class='3' data-bs-toggle="modal" data-bs-target="#modal-type"></td>
+    <td class='4' data-bs-toggle="modal" data-bs-target="#modal-type"></td>
+    <td class='5' data-bs-toggle="modal" data-bs-target="#modal-type"></td>`
+
+    option.setAttribute('style', 'border: 1px solid black')
+    planning.appendChild(option)
+
+
+    /* $("#calendar > tbody > tr > td ").popover({
+    html: true,
+    title:'Choisir lintervalle de maintenance',
+    content: function () {
+    return $("#selectIntervalle").html();
+    }
+    });
+    */
+
+    /* if(row.cells[1].innerText==="Annuelle"){
+    var moisAnn = row.cells[3].innerText
+    var semaineAnn = row.cells[2].innerText
+    $('.'+semaineAnn+'\'').css('background-color', 'red')}*/
+
+    //iterate through rows
+    //rows would be accessed using the "row" variable assigned in the for loop
+    for (let j in row.cells) {
+    let col = row.cells[j]
+    
+    }
+    }
+
+
+    $("#calendar > tbody > tr > td ").click(function(ev) {
+
+    var Row=$(this).closest("tr").index();
+    var Column= $(this).closest("td").index();
+    console.log(Row)
+    console.log(Column)
+    function handle_click_event (event, new_color ) {
+    event.target.style.backgroundColor = new_color; }
+    console.log('ev')
+    nxtd=$(this).closest('td').next('td').next('td').next('td').next('td')
+    console.log(nxtd)
+    th=$(this)
+    $("#intervalle ").change(function() {
+    intervalleValue=getval(this)
+
+
+    if(intervalleValue=="Annuelle"){
+    handle_click_event(ev, 'rgb(219, 154, 147)' )
+
+
+    }
+  
+
+
+    }
+
+    })
+
+    })
+
+
+
+
+        </script>
+        {% endblock %}

@@ -1,0 +1,207 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+   <meta content="" name="description">
+    <meta content="" name="keywords">
+   <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!-- CDNs -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/HMT-logo-bg.png'%}" rel="icon">
+    <link href="{% static 'assets/img/HMT-logo-bg.png'%}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet">
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <!-- Template Main CSS File -->
+
+    <!-- Fontfaces CSS-->
+    <link href="{% static 'css/font-face.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/font-awesome-4.7/css/font-awesome.min.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/font-awesome-5/css/fontawesome-all.min.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/mdi-font/css/material-design-iconic-font.min.css'%}" rel="stylesheet" media="all">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital@1&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS-->
+    <link href="{% static 'vendor/bootstrap-4.1/bootstrap.min.css'%}" rel="stylesheet" media="all">
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/HMT-logo-bg.png'%}" rel="icon">
+    <link href="{% static 'assets/img/HMT-logo-bg.png'%}" rel="apple-touch-icon">
+    <!-- Vendor CSS-->
+    <link href="{% static 'vendor/animsition/animsition.min.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css'%}" rel="stylesheet"
+        media="all">
+    <link href="{% static 'vendor/wow/animate.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/css-hamburgers/hamburgers.min.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/slick/slick.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/select2/select2.min.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.css'%}" rel="stylesheet" media="all">
+    <!-- CDNs -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Main CSS-->
+    <link href="{% static 'css/theme.css'%}" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link href="{% static 'assets/css/style.css'%}" rel="stylesheet">
+
+    <link href="{% static 'css/font-face.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/font-awesome-4.7/css/font-awesome.min.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/font-awesome-5/css/fontawesome-all.min.css'%}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/mdi-font/css/material-design-iconic-font.min.css'%}" rel="stylesheet" media="all">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="{% static 'css/theme.css'%}" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    {% block head %}
+    {% endblock %}
+
+</head>
+
+<body  style="margin-right: 20px;margin-left: 20px">
+    <div style="width:100% ; overflow-x: hidden">
+    <!-- ======= Header ======= -->
+<header id="header" style="padding: 0; top: 0 ;background-color:#f7f7f7   ;margin-right:0 ; margin-left:0;  box-shadow: 0px 1px 2px #f7f7f7;
+ "> 
+  <div class="container d-flex align-items-center">
+    <!--Uncomment below if you prefer to use an image logo -->
+    <a href="/home" class="logo mr-auto"
+      ><img
+        width="130"
+        height="50"
+        id="logo"
+        style="height: 50px; weight: 110px; padding-bottom: 0"
+        src="{% static 'assets/img/HMT-logo-bg.png'%}"
+        alt=""
+    /></a>
+
+    <nav class="nav-menu d-none d-lg-block ">
+      <ul>
+        <li><a href="/home">Accueil</a></li>
+        <li><i type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" class='bx bxs-bell bx-tada-hover bx-sm'></i></li>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasRightLabel">Notifications</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    ...
+  </div>
+</div>
+        <li class="drop-down">
+          {% firstof user.get_short_name user.get_username %}
+          <i class="fas fa-caret-down"></i>
+          <ul>
+            <li><a href="/admin"><i class="fas fa-cog"></i> Admin panel</a></li>
+            <li><a href="/logout"> <i class="fas fa-sign-out-alt"></i> Deconnecter</a></li>
+          </ul>
+        </li>
+
+        <li><a href="/about">Á propos</a></li>
+      </ul>
+    </nav>
+    <!-- .nav-menu -->
+  </div>
+</header>
+<!-- End Header -->
+    {% block body %}
+    {% endblock %}
+    </div>
+    <!-- Jquery JS-->
+    <script src="{% static 'vendor/jquery-3.2.1.min.js'%}"></script>
+    <!-- Bootstrap JS-->
+    <script src="{% static 'vendor/bootstrap-4.1/popper.min.js'%}"></script>
+    <script src="{% static 'vendor/bootstrap-4.1/bootstrap.min.js'%}"></script>
+    <!-- Vendor JS       -->
+    <script src="{% static 'vendor/slick/slick.min.js'%}">
+    </script>
+    <script src="{% static 'vendor/wow/wow.min.js'%}"></script>
+    <script src="{% static 'vendor/animsition/animsition.min.js'%}"></script>
+    <script src="{% static 'vendor/bootstrap-progressbar/bootstrap-progressbar.min.js'%}">
+    </script>
+    <script src="{% static 'vendor/counter-up/jquery.waypoints.min.js'%}"></script>
+    <script src="{% static 'vendor/counter-up/jquery.counterup.min.js'%}">
+    </script>
+    <script src="{% static 'vendor/circle-progress/circle-progress.min.js'%}"></script>
+    <script src="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.js'%}"></script>
+    <script src="{% static 'vendor/chartjs/Chart.bundle.min.js'%}"></script>
+    <script src="{% static 'vendor/select2/select2.min.js'%}">
+    </script>
+    <!-- Vendor JS Files -->
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
+    <script src="{% static 'assets/vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/php-email-form/validate.js'%}"></script>
+    <script src="{% static 'assets/vendor/waypoints/jquery.waypoints.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/counterup/counterup.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/venobox/venobox.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/aos/aos.js'%}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384 JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script src="{% static 'js/main.js'%}"></script>
+
+
+    {% block script %}
+    {% endblock %}
+
+</body>
+
+</html>

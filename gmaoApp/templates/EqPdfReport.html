@@ -1,0 +1,93 @@
+ 
+{%load static%}
+<head>
+   {% load static %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+   <style>
+     td {
+       padding-bottom: 2px;
+       padding-top: 2px;
+       margin-left: 0;
+     }
+     th {
+       padding-top: 2px;
+     }
+   </style>
+
+<title>Rapport des équipements</title>
+
+ </head>
+
+
+
+ 
+
+ <body style="margin: 5px">
+ 
+   <header>
+   
+<img width="150" height="50" style="float:left" src="C:\Users\HP\Documents\S6\PFE\coding\gmaoWeb\backend\gmaoApp\static\assets\img\HMT-logo-bg.png">
+    <span style="font-size:30px ;font-family: 'Josefin Sans', serif ; font-weight:bold ;margin-bottom =0"><span style="color:white">----------</span>Liste des équipements</span>
+
+     <hr>
+   </header>
+   <div >
+
+     <div style="font-size:15px  ;padding-top: 15px ; margin-bottom: 2px">
+       <p>Nombre des équipements : <span style="font-weight:bold">{{ Nbreq }}</span></p>
+
+     </div>
+
+     <div>
+
+
+     </div>
+   </div>
+   <div >
+     <table class="table align-middle" border="1">
+       <thead>
+         <tr >
+
+           <th>#</th>
+           <th>Ref</th>
+           <th>Serie</th>
+           <th>Type</th>
+           <th>emplacement</th>
+           <th>Designation</th>
+           <th>Client de moule</th>
+           <th>Date de mise en marche</th>
+         </tr>
+       </thead>
+       <tbody>
+
+
+         {% for eq_list in eq %}
+
+         <tr
+           style="
+    {% if eq_list.type_equipement_id == 1 %}background-color:rgb(253, 230, 211){%endif%}{% if eq_list.type_equipement_id == 2 %}background-color:rgb(227, 250, 198){%endif%}{% if eq_list.type_equipement_id == 3 %}background-color:rgb(211, 253, 237){%endif%} "
+           >
+           <td style="width:1cm">{{ forloop.counter}}</td>
+           <td>{{ eq_list.ref_equipement }}</td>
+           <td>{{ eq_list.serie_equipement }}</td>
+           <td>{{ eq_list.type_equipement }}</td>
+           <td>{{ eq_list.emplacement_equipement }}</td>
+           <td>{{ eq_list.designation_equipement }}</td>
+           <td>{{ eq_list.client_equipement }}</td>
+           <td>{{ eq_list.date_debut_fonctionnement_equipement }}</td>
+
+
+         </tr>
+         {% empty %}
+         Aucun équipement !
+         {% endfor %}
+       </tbody>
+     </table>
+   </div>
+  
+ </body>
+

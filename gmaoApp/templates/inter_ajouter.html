@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{%load static%}
+{% block head %}
+
+<title>Déclarer une intervention</title>
+
+{% endblock %}
+
+{% block body %}
+ 
+    <a href="/home"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+
+
+    <div class="container" style="margin: 50px ; margin-left: 400px">
+        {% if messages %}
+        <ul class="messages">
+        
+            {% for message in messages %}
+            <div style="width:500px" class="ml-4 sufee-alert alert with-close alert-primary alert-dismissible fade show"
+                role="alert">
+
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="col-lg-8">
+            <div class="card shadow-lg p-3 mb-5 bg-body rounded">
+                <div class="card-header text-white bg-success">
+                    <strong><i class="fas fa-plus"></i> Déclarer une intervention</strong>
+                </div>
+                
+                <div class="card-body card-block bg-light">
+
+                    <form action={% url "InterAjouter" %} method="POST" enctype="multipart/form-data"
+                        class="form-horizontal" id="inter_form">
+                        {% csrf_token %}
+
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Type d'intervention</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.type_intervention}}
+                            </div>
+                        </div>
+
+
+                          <div class="row form-group" id="types">
+                            <div class="col col-md-3">
+
+                                <label for="text-input" class=" form-control-label">Type d'équipement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control custom-select " id="types-data-box" name="type_eq" required>
+                                    <option value=""></option>
+                             
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" id="equipements">
+                            <input type="hidden" name="equipement">
+                            <div class="col col-md-3">
+
+                                <label for="text-input" class=" form-control-label" id="equipement-text">Ref
+                                    d'équipement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control custom-select " id="equipements-data-box" 
+                                    name="ref_equipement" required>
+
+                              
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="date-input" class=" form-control-label">Date déclaration</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.date_declaration_defaillance}}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="date-input" class=" form-control-label">Date d'intervention</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.date_intervention}}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">debut d'intervention</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.debut_intervention}}
+                            </div>
+                        </div>
+                        
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">fin d'intervention</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.fin_intervention}}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Probléme </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.cause_intervention}}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Déclaré par</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.declare_par_defaillance}}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Les actions</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.actions_intervention}}
+                            </div>
+                        </div>
+
+
+                        
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Piéces utilisées</label>
+                            </div>
+
+                            <div class="col-12 col-md-4"  >
+                                               {{form.pieces_utilisees}}
+                            </div>    
+                        </div>
+                        <div id="quan_utilise">
+                        </div>
+                                             
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Observations</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.observation_intervention}}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Résultat</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.resultat_intervention}}
+                            </div>
+                        </div>
+
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                       <i class="fas fa-plus"></i>  Ajouter
+                    </button>
+                    <button type="reset" class="btn btn-danger btn-sm">
+                        <i class="fa fa-ban"></i> Effacer
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+    </form>
+
+
+{% endblock %}
+
+{% block script %}
+ <script>
+        const typesDataBox = document.getElementById("types-data-box")
+        const typeInput = document.getElementById('types')
+        const equipementsDataBox = document.getElementById("equipements-data-box")
+        const equipementInput = document.getElementById('equipements')
+        const equipementText = document.getElementById('equipement-text')
+        const quan_utilise = document.getElementById('quan_utilise')
+        var dict = {};
+            var data = {{pdrData|safe}};
+ 
+                $("#pieces_selected").change(function (event) {
+        quan_utilise.innerHTML = ''
+        pdr_select = $(this).val()
+
+         pdr_select.map(item => {
+                        const option = document.createElement('div')
+                        option.innerHTML=`<div class="row form-group"><div class=" col col-md-3"> <label for="number-input" class=" form-control-label" >Quantité utilisée de ${data[item]}</label></div>
+                        <div class="col-12 col-md-2 ">
+                                               <input class=" form-control"  id="${item}" type="number" min="0" style= "border:1px solid gray"></div></div>`
+                        quan_utilise.appendChild(option)
+                     
+                    })
+
+                })
+            $('#inter_form').submit(function(e){
+pdr_selec = $("#pieces_selected").val()
+         pdr_selec.map(item => {
+        
+                                dict[item]= $(`#${item}`).val()
+                  
+                                })
+
+                    $.ajax({
+        type: "GET",
+        url: "{% url 'getPDR' %}",
+        data: {
+            "dict" : JSON.stringify(dict),
+           
+        },
+        dataType: "json",
+        success: function (data) {
+
+
+            // any process in data
+        },
+        failure: function () {
+            alert("erreur");
+        }
+                    
+            })
+         
+            })
+        $.ajax({
+            type: 'GET',
+            url: '/type_json/',
+            success: function (response) {
+                const typesData = response.data
+                typesData.map(item => {
+                    const option = document.createElement('option')
+                    option.textContent = item.name
+                    option.setAttribute('value', item.name)
+                    typesDataBox.appendChild(option)
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+
+        typeInput.addEventListener('change', e => {
+            const selectedType = e.target.value
+
+            equipementsDataBox.innerHTML = ""
+            $.ajax({
+                type: 'GET',
+                url: `/equipement_json/${selectedType}/`,
+                success: function (response) {
+                    const equipementsData = response.data
+                    equipementsData.map(item => {
+                        const option = document.createElement('option')
+                        option.textContent = item.ref_equipement
+                        option.setAttribute('value', item.ref_equipement)
+                        equipementsDataBox.appendChild(option)
+                    })
+
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            })
+        })
+    </script>
+{% endblock %}

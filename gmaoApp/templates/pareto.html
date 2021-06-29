@@ -1,0 +1,370 @@
+{% extends "base.html" %}
+{%load static%}
+{% block head %}
+<title>Génerer Pareto</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+{% endblock %}
+
+{% block body %}
+<!-- ======= Header ======= -->
+<header id="header" style="padding:0; top:0">
+    <div class="container d-flex align-items-center">
+
+        <!--Uncomment below if you prefer to use an image logo -->
+        <a href="/home" class="logo mr-auto"><img width="130" height="50"
+                style="height:50px; weight:110px; padding-bottom:8px" src="{% static 'assets/img/HMT-logo-bg.png'%}"
+                alt=""></a>
+
+        <nav class="nav-menu d-none d-lg-block">
+            <ul>
+                <li><a href="/home">Accueil</a></li>
+                <li><i class='bx bxs-bell bx-tada-hover bx-sm'></i></li>
+
+                <li class="drop-down">{% firstof user.get_short_name user.get_username %} <i
+                        class="fas fa-caret-down"></i>
+                    <ul>
+                        <li><a href="/admin">Admin panel</a></li>
+                        <li><a href="/logout">Deconnecter</a></li>
+
+                    </ul>
+                </li>
+
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav><!-- .nav-menu -->
+    </div>
+</header><!-- End Header -->
+<a href="/historique"><i class="ml-4 mt-3 mb-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+
+<div class="row form-group" id="types">
+    <div class="col-2 col-md-2">
+
+        <h6>Choisir le type d'equipement:</h6>
+    </div>
+    <div class="col-3 col-md-2">
+        <select class=" form-select" id="types-data-box" required>
+            <option value=""></option>
+        </select>
+    </div>
+</div>
+
+<div class="row form-group" id="mois">
+    <div class="col-2 col-md-2">
+        <h6>Choisir le mois :</h6>
+    </div>
+    <div class="col-3 col-md-2">
+        <input type="text" placeholder="ex: 08" class="form-control" name="mois_pareto"> </div>
+</div>
+
+<div class="row mt-3 pt-3">
+    <div class="col-md-6 ">
+
+        <table class="table table-sm table-bordered table-striped" id="myTableData" style="width:100% " border="1">
+            <thead style="background-color:rgb(255, 123, 47)">
+                <tr>
+                    <th>Date</th>
+                    <th>Équipements</th>
+                    <th>Probléme</th>
+                    <th>Fréquence/min</th>
+                    <th>%</th>
+                    <th style="width:3.5cm">cumulés des %</th>
+
+                </tr>
+            </thead>
+            <tbody id="pareto-data-box" style="border:1px solid black">
+
+
+            </tbody>
+
+            <tr style="background-color:rgb(255, 123, 47)">
+                <td colspan="3"><b> total</b> </td>
+
+                <td id="totalfeild"></td>
+            </tr>
+        </table>
+
+
+    </div>
+    <div class="col-md-6" id="divpareto">
+    </div>
+
+
+    <script>
+        const typesDataBox = document.getElementById("types-data-box")
+        const typeInput = document.getElementById('types')
+        const moisInput = document.getElementById('mois')
+        const totalfeild = document.getElementById('totalfeild')
+        const pourcColumn = document.getElementById('pourcColumn')
+        const divpareto = document.getElementById('divpareto')
+        const paretoDataBox = document.getElementById('pareto-data-box')
+        $.ajax({
+            type: 'GET',
+            url: '/type_json/',
+            success: function (response) {
+                console.log("types :")
+                console.log(response.data)
+                const typesData = response.data
+                typesData.map(item => {
+                    const option = document.createElement('option')
+                    option.textContent = item.name
+                    option.setAttribute('value', item.name)
+                    typesDataBox.appendChild(option)
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+
+        typeInput.addEventListener('change', e => {
+            console.log('e.target.id')
+            console.log(e.target.value)
+            const selectedType = e.target.value
+
+
+            moisInput.addEventListener('change', e => {
+                console.log(e.target.value)
+                const selectedMois = e.target.value
+                paretoDataBox.innerHTML = ""
+                var eqIdArray = [];
+                var interfiltre = [];
+
+                $.ajax({
+                    type: 'GET',
+                    url: `/equipement_json/${selectedType}/`,
+                    success: function (response) {
+                        console.log("filtre :")
+                        console.log(response.data)
+                        const equipementsData = response.data
+
+                        Object.keys(response).forEach(function (key) {
+
+
+                            for (var i = 0; i < response.data.length; i++) {
+                                var eqId = response.data[i].id
+                                eqIdArray.push(eqId)
+                            }
+                            console.log('eqId :')
+                            console.log(eqIdArray)
+                            var inter = [];
+                            for (var i = 0; i < eqIdArray.length; i++) {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: `/intervention_filtre_json/${eqIdArray[i]}/${selectedMois}`,
+                                    success: function (response) {
+                                        console.log('response :')
+                                        console.log(response.ob)
+                                        for (var i = 0; i < response
+                                            .ob.length; i++) {
+
+                                            const interfiltredata =
+                                                response.ob[i]
+                                            interfiltre.push(
+                                                interfiltredata)
+                                        }
+
+                                    },
+                                    error: function (error) {
+                                        console.log(error)
+                                    }
+
+                                })
+                            }
+                            console.log('interfiltre :')
+                            console.log(interfiltre)
+
+
+                        })
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                })
+
+
+                //////////////////////////////////////////////////////////////
+                $.ajax({
+                    type: 'GET',
+                    url: `/intervention_mois_json/${selectedMois}`,
+                    success: function (response) {
+                        console.log("pareto : ")
+                        console.log(response.data)
+                        const ParetoData = response.data
+                        var eqArray = []
+                        ParetoData.map(item => {
+                            var eq = item.eq_inter_id
+                            eqArray.push(eq)
+                        })
+                        console.log('ParetoData.eq_inter_id')
+                        console.log(eqArray)
+                        console.log('eqId -----------:')
+                        console.log(eqIdArray)
+
+                        ParetoData.map(item => {
+
+                            //tableau :
+                            const option = document.createElement('tr')
+
+
+                            option.innerHTML =
+                                "<td style='width:4cm'>" + item
+                                .date_intervention +
+                                "</td>" +
+                                "<td style='vertical-align: middle'>" +
+                                item.eq_inter_id + "</td>" +
+                                "<td style='vertical-align: middle'>" +
+                                item
+                                .cause_intervention + "</td>" +
+                                "<td style='vertical-align: middle'>" +
+                                item
+                                .duree_intervention + "</td>"
+
+                            option.setAttribute('style',
+                                'border: 1px solid black')
+                            paretoDataBox.appendChild(option)
+
+                        })
+                        Object.keys(response).forEach(function (key) {
+                            var total = 0
+                            for (var i = 0; i < response.data.length; i++) {
+                                total = total + response.data[i]
+                                    .duree_intervention
+                            }
+                            totalfeild.innerHTML = "<b>" + total + "</b>"
+
+                            var dureeArray = [];
+                            for (var i = 0; i < response.data.length; i++) {
+                                var duree = response.data[i].duree_intervention
+                                dureeArray.push(duree)
+                            }
+
+                            var pourcArray = [];
+                            console.log(dureeArray)
+                            for (var i = 0; i < response.data.length; i++) {
+                                var pourc = (dureeArray[i] / total) * 100
+                                pourcArray.push(pourc)
+                            }
+                            console.log(pourcArray)
+
+                            var table = document.getElementById("myTableData");
+                            for (var i = 0; i < pourcArray.length; i++) {
+                                var cell2 = table.rows[i + 1].insertCell(table
+                                    .rows[
+                                        i + 1].cells.length);
+                                cell2.innerHTML += pourcArray[i].toFixed(2);
+
+                            }
+                            var cumuleArray = [];
+                            var sum = 0;
+
+                            for (var i in pourcArray) {
+                                sum = sum + pourcArray[i];
+                                cumuleArray.push(sum)
+                            }
+                            console.log(cumuleArray)
+                            for (var i = 0; i < cumuleArray.length; i++) {
+                                var cell2 = table.rows[i + 1].insertCell(table
+                                    .rows[
+                                        i + 1].cells.length);
+                                cell2.innerHTML += cumuleArray[i].toFixed(2);
+
+                            }
+
+                            //pareto :
+                            const div = document.createElement('div')
+                            div.innerHTML =
+                                "<canvas id='myChart' width='350px' height='250px'></canvas>"
+                            divpareto.appendChild(div)
+
+                            function BuildChart(labels, values, cumule) {
+                                var ctx = document.getElementById('myChart')
+                                    .getContext(
+                                        '2d');
+
+                                var myChart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: "Cumulés %",
+                                            backgroundColor: 'transparent',
+                                            borderColor: 'orangered',
+                                            data: cumule,
+                                            type: 'line',
+                                            pointBackgroundColor: 'orangered',
+                                            pointStyle: 'rect',
+
+                                        }, {
+                                            label: "Fréquence /min",
+                                            backgroundColor: 'rgb(0, 99, 132)',
+                                            borderColor: 'rgb(0, 99, 132)',
+                                            data: values,
+                                            pointStyle: 'line',
+
+
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            xAxes: [{
+                                                maxBarThickness: 60,
+
+                                                ticks: {
+                                                    autoSkip: false
+                                                }
+                                            }],
+                                        },
+                                        tooltips: {
+                                            mode: 'index',
+                                        },
+                                        legend: {
+                                            display: true,
+
+
+                                        }
+                                    }
+
+                                });
+
+                                return myChart;
+                            }
+
+
+                            var labels = ParetoData.map(function (e) {
+                                return e.cause_intervention;
+                            });
+                            console.log("labels:");
+                            console.log(labels);
+
+                            var values = ParetoData.map(function (e) {
+                                return e.duree_intervention;
+                            });
+                            console.log("values:");
+                            console.log(values);
+
+                            var cumule = cumuleArray.map(function (e) {
+                                return e;
+                            });
+                            console.log("cumule :");
+                            console.log(cumuleArray);
+
+                            BuildChart(labels, values, cumule)
+
+
+                        });
+
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                })
+                /////////////////////////////////
+            })
+        })
+    </script>
+
+    {% endblock %}

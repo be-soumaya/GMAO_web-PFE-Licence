@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{%load static%}
+{% block head %}
+
+<title>Ajouter un equipement</title>
+
+{% endblock %}
+
+{% block body %}
+
+<body>
+    <a href="/eq_index"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+
+
+    <div class="container" style="margin: 50px ; margin-left: 400px">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="alert alert-primary" role="alert">
+                {{ message }}
+            </div>
+
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header text-white" style="background-color:darkblue">
+                    <strong> <i class="fas fa-plus"></i> Ajouter un equipement</strong>
+                </div>
+                <div class="card-body card-block  bg-light">
+                    <form action={% url "Ajouter" %} method="POST" enctype="multipart/form-data"
+                        class="form-horizontal">
+                        {% csrf_token %}
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Ref. d'équipement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+
+                                {{form.ref_equipement}}
+
+
+
+                            </div>
+
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Série d'équipement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.serie_equipement}}
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Type d'équipement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.type_equipement}}
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Emplacement d'équipement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.emplacement_equipement}}
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Désignation d'équipement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.designation_equipement}}
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Client de moule</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.client_equipement}}
+
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">date de mise en marche</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                {{form.date_debut_fonctionnement_equipement}}
+
+                            </div>
+                        </div>
+
+
+
+
+
+
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i>Ajouter
+                    </button>
+                    <button type="reset" class="btn btn-danger btn-sm">
+                        <i class="fa fa-ban"></i> Effacer
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+    </form>
+
+</body>
+{% endblock %}

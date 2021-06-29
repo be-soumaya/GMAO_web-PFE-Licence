@@ -1,0 +1,749 @@
+{% extends "base.html" %} {%load static%}
+{% block head %}
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
+<title>Les indicateurs</title>
+{% endblock %} {% block body %}
+
+<a href="/home"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i>
+</a>
+
+<center>
+    <h4 style="font-size: 40px; font-family: 'Josefin Sans', sans-serif" class="title-5 ml-5 mt-3 text-center">
+        les indicateurs
+    </h4>
+</center>
+
+<div class="col-md-3">
+
+    <form method="get" id="form">
+        Type des équipements :
+        {{myFilter.form.type_inter}}
+        Mois : {{myFilter.form.date_intervention}}
+
+        <br />
+        <button id="selectbutton" class="au-btn au-btn-icon au-btn--green au-btn--small">
+            Calculer les indicateurs
+        </button>
+    </form>
+</div>
+<div class="row pt-3 mt-3">
+    {% comment %} <div style="margin-left: 1000px; width:180px">
+        L'indicateur :
+        <select class="form-control custom-select" id="types-indicateur" name="indicateur">
+            <option value="---------">---------</option>
+            <option value="temps_maintenance">Temps de maintenance</option>
+            <option value="MTTR">MTTR</option>
+            <option value="MTBF">MTBF</option>
+        </select>
+    </div> {% endcomment %}
+    <button style="margin-left: 1200px;width:5cm; height: 1cm" class="au-btn au-btn-icon btn btn-danger au-btn--small" id="pdf">
+        <i class="fad fa-download"></i>Telecharger PDF
+    </button>
+</div>
+<div class="row mt-3 pt-3">
+    <div class="col">
+    </div>
+    <div id="text" class="col-md-9">
+        <div id="tableTemps">
+            <h2>TEMPS DE MAINTENANCE :</h2>
+            <table class="table table-sm table-bordered table-striped mb-5 " style="width: 100%  " border="1">
+                <thead style="background-color: rgb(255, 200, 47)">
+                    <tr>
+                        <th style="text-align: center;border:1px solid black">
+                            Temps total de maintenance corrective (h)
+                        </th>
+                        <th style="text-align: center;border:1px solid black">
+                            Temps total de maintenance préventive (h)
+                        </th>
+                        <th style="text-align: center;border:1px solid black">Total de temps (h)</th>
+                        <th style="text-align: center;border:1px solid black"><b>Temps de maintenance (%)</b></th>
+                        <th style="text-align: center;border:1px solid black">Objective (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="pareto-data-box" style="border: 1px solid black">
+                    <tr>
+                        <td style="border: 1px solid black">{{ totalcorr|floatformat:2 }}</td>
+                        <td style="border: 1px solid black">{{ totalprev|floatformat:2 }}</td>
+                        <td style="border: 1px solid black">{{total|floatformat:2}}</td>
+                        <td style="border: 1px solid black"><b>{{temps_maintenance|floatformat:2}}</b></td>
+                        <td style="border: 1px solid black">{{objtemps}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="tablemttr">
+
+            <h2>MTTR :</h2>
+            <table class="table table-sm table-bordered table-striped mb-5" style="width: 100%" border="1">
+                <thead style="background-color: rgb(255, 200, 47)">
+                    <tr>
+                        <th style="text-align: center;border:1px solid black">Total de temps des arrêts(h)</th>
+                        <th style="text-align: center;border:1px solid black">Nombre des arrêts</th>
+                        <th style="text-align: center;border:1px solid black"><b>MTTR (h)</b></th>
+                        <th style="text-align: center;border:1px solid black">Objective (h)</th>
+                    </tr>
+                </thead>
+                <tbody id="pareto-data-box" style="border: 1px solid black">
+                    <tr>
+                        <td style="border: 1px solid black">{{ totalcorr|floatformat:2 }}</td>
+                        <td style="border: 1px solid black">{{nbrArretCorr}}</td>
+                        <td style="border: 1px solid black"><b>{{mttr|floatformat:2}}</b></td>
+                        <td style="border: 1px solid black">{{objmttr}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="tablemtbf">
+
+            <h2>MTBF :</h2>
+            <table class="table table-sm table-bordered table-striped mb-5" style="width: 100%" border="1">
+                <thead style="background-color: rgb(255, 200, 47)">
+                    <tr>
+                        <th style="text-align: center;border:1px solid black">Total de temps de maintenance (h)</th>
+                        <th style="text-align: center;border:1px solid black">
+                            Total d'heures de fonctionnement (h)
+                        </th>
+                        <th style="text-align: center;border:1px solid black"><b>MTBF (%)</b></th>
+                        <th style="text-align: center;border:1px solid black">Objective (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="pareto-data-box" style="border: 1px solid black">
+                    <tr>
+                        <td style="border: 1px solid black">{{total|floatformat:2}}</td>
+                        <td style="border: 1px solid black">{{nbrFonc|floatformat:2}}</td>
+                        <td style="border: 1px solid black"><b>{{mtbf|floatformat:2}}</b></td>
+                        <td style="border: 1px solid black">> 97%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col">
+    </div>
+ <center>   
+<hr class="mb-5 w-50 " >
+</center>
+    <div class="col-md-12">
+    <form method="POST" >
+         {% csrf_token %}
+
+    <div class="row form-group">
+    
+
+           <div class=" col-md-2 mr-0 " style="max-width: fit-content;">
+                                <label for="number-input" class=" form-control-label">Choisir l'année :</label>
+                            </div>
+                            <div class="col-md-1 ">
+         <input type="number" min="2010" max="2099" step="1" name="year_courbe"  class="form-control"/>
+
+</div>
+            <div class="col-md-1 d-flex ">
+
+        <input type="submit" value="Génerer les courbes" class="au-btn au-btn-icon au-btn--green au-btn--small">
+            </div>
+
+</div>
+    </form>
+    <div id="char">
+        <h2>&#x2714; Moules :</h2>
+        <div class="row mt-4" style="height:350px">
+            <div class="col-md-4" id="charttempsmoule">
+            </div>
+            <div class="col-md-4" id="chartmtbfmoule">
+            </div>
+            <div class="col-md-4" id="chartmttrmoule">
+            </div>
+        </div>
+        <h2>&#x2714; Machines :</h2>
+        <div class="row mt-4" style="height:350px">
+            <div class="col-md-4" id="charttempsmachine">
+            </div>
+            <div class="col-md-4" id="chartmtbfmachine">
+            </div>
+            <div class="col-md-4" id="chartmttrmachine">
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script>
+        //courbes :
+        const div = document.createElement('div')
+        const divpareto = document.getElementById('charttempsmoule')
+
+        div.innerHTML =
+            "<canvas id='myChart' width='350px' height='220px'></canvas>"
+        divpareto.appendChild(div)
+
+        function BuildChart(mois, values, obj) {
+            var ctx = document.getElementById('myChart')
+                .getContext(
+                    '2d');
+
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: mois,
+                    datasets: [{
+                        label: "Objective %",
+                        backgroundColor: 'transparent',
+                        borderColor: 'red',
+                        data: obj,
+                        borderWidth: '2',
+
+                        type: 'line',
+                        pointBackgroundColor: 'red',
+                        pointStyle: 'line',
+
+
+                    }, {
+
+                        label: "Temps de maintenance",
+                        backgroundColor: 'rgba(75, 192, 192, 0.4)',
+
+                        borderColor: 'rgb(75, 192, 192,1)',
+
+                        data: values,
+                        pointStyle: 'line',
+
+
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            maxBarThickness: 60,
+
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }],
+                    },
+                    tooltips: {
+                        mode: 'index',
+                    },
+
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'TEMPS DE MAINTENANCE des moules de '+{{year|safe}}
+                        },
+                        legend: {
+                            display: true,
+
+                        },
+                    }
+                }
+
+            });
+
+            return myChart;
+        }
+
+
+        var values = {{tempsmaintenancemoule | safe}}
+
+        var obj = ['20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20', '20']
+
+        var mois = ['jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sep', 'Oct', 'Nov', 'Dec']
+ 
+        BuildChart(mois, values, obj)
+    </script>
+
+    <script>
+        
+        const divtempsmach = document.createElement('div')
+        const divchartmach = document.getElementById('charttempsmachine')
+
+        divtempsmach.innerHTML =
+            "<canvas id='myCharttemps' width='350px' height='220px'></canvas>"
+        divchartmach.appendChild(divtempsmach)
+
+        function BuildChart(mois, values, obj) {
+            var ctxtemps = document.getElementById('myCharttemps')
+                .getContext(
+                    '2d');
+
+            var myChart = new Chart(ctxtemps, {
+                type: 'bar',
+                data: {
+                    labels: mois,
+                    datasets: [{
+                        label: "Objective %",
+                        backgroundColor: 'transparent',
+                        borderColor: 'red',
+                        borderWidth: '2',
+                        data: obj,
+                        type: 'line',
+                        pointBackgroundColor: 'red',
+                        pointStyle: 'line',
+
+                    }, {
+                        label: "Temps de maintenance",
+                        backgroundColor: 'rgba(75, 192, 192, 0.4)',
+
+                        borderColor: 'rgb(75, 192, 192,1)',
+
+                        data: values,
+                        pointStyle: 'line',
+
+
+                    }]
+                },
+                options: {
+
+                    scales: {
+                        xAxes: [{
+                            maxBarThickness: 60,
+
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }],
+                    },
+                    tooltips: {
+                        mode: 'index',
+                    },
+                    legend: {
+                        display: true,
+
+
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'TEMPS DE MAINTENANCE des machines de '+{{year|safe}}
+                        }
+                    }
+                }
+
+            });
+
+            return myChart;
+        }
+
+
+        var values = {{tempsmaintenancemachine | safe}}
+  
+
+        var obj = ['15', '15', '15', '15', '15', '15', '15', '15', '15', '15', '15', '15']
+
+        var mois = ['jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sep', 'Oct', 'Nov', 'Dec']
+
+        BuildChart(mois, values, obj)
+    </script>
+
+    <script>
+        
+        const divmttrmoule = document.createElement('div')
+        const divchartmoule = document.getElementById('chartmttrmoule')
+
+        divmttrmoule.innerHTML =
+            "<canvas id='myChartmttrmoule' width='350px' height='220px'></canvas>"
+        divchartmoule.appendChild(divmttrmoule)
+
+        function BuildChart(mois, values, obj) {
+            var ctxtemps = document.getElementById('myChartmttrmoule')
+                .getContext(
+                    '2d');
+
+            var myChart = new Chart(ctxtemps, {
+                type: 'bar',
+                data: {
+                    labels: mois,
+                    datasets: [{
+                        label: "Objective (h)",
+                        backgroundColor: 'transparent',
+                        borderColor: 'red',
+                        borderWidth: '2',
+                        data: obj,
+                        type: 'line',
+                        pointBackgroundColor: 'red',
+                        pointStyle: 'line',
+
+                    }, {
+                        label: "MTTR",
+                        backgroundColor: 'rgba(7, 10, 12, 0.4)',
+
+                        borderColor: 'rgb(7, 10, 12,1)',
+
+                        data: values,
+                        pointStyle: 'line',
+
+
+                    }]
+                },
+                options: {
+
+                    scales: {
+                       
+                        xAxes: [{
+                            maxBarThickness: 60,
+
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }],
+                    },
+                    tooltips: {
+                        mode: 'index',
+                    },
+                    legend: {
+                        display: true,
+
+
+
+
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'MTTR des moules de '+{{year|safe}}
+                        }
+                    }
+                }
+
+            });
+
+            return myChart;
+        }
+
+
+        var values = {{mttrmooule | safe}}
+
+        var obj = ['8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8', '8']
+
+        var mois = ['jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sep', 'Oct', 'Nov', 'Dec']
+
+        BuildChart(mois, values, obj)
+    </script>
+
+    <script>
+        
+        const divmttrmachine = document.createElement('div')
+        const divchartmachine = document.getElementById('chartmttrmachine')
+
+        divmttrmachine.innerHTML =
+            "<canvas id='mychartmttrmachine' width='350px' height='220px'></canvas>"
+        divchartmachine.appendChild(divmttrmachine)
+
+        function BuildChart(mois, values, obj) {
+            var ctxtemps = document.getElementById('mychartmttrmachine')
+                .getContext(
+                    '2d');
+
+            var myChart = new Chart(ctxtemps, {
+                type: 'bar',
+                data: {
+                    labels: mois,
+                    datasets: [{
+                        label: "Objective (h)",
+                        backgroundColor: 'transparent',
+                        borderColor: 'red',
+                        borderWidth: '2',
+                        data: obj,
+                        type: 'line',
+                        pointBackgroundColor: 'red',
+                        pointStyle: 'line',
+
+                    }, {
+                        label: "MTTR",
+                        backgroundColor: 'rgba(7, 10, 12, 0.4)',
+
+                        borderColor: 'rgb(7, 10, 12,1)',
+
+                        data: values,
+                        pointStyle: 'line',
+
+
+                    }]
+                },
+                options: {
+
+                    scales: {
+
+                        xAxes: [{
+                            maxBarThickness: 60,
+
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }],
+                    },
+                    tooltips: {
+                        mode: 'index',
+                    },
+                    legend: {
+                        display: true,
+
+
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'MTTR des machines de '+{{year|safe}}
+                        }
+                    }
+                }
+
+            });
+
+            return myChart;
+        }
+
+
+        var values = {{mttrmachine | safe}}
+
+        var obj = ['4', '4', '4', '4', '4', '4', '4', '4', '4', '4', '4', '4']
+
+        var mois = ['jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sep', 'Oct', 'Nov', 'Dec']
+
+        BuildChart(mois, values, obj)
+    </script>
+
+    <script>
+        
+        const divmtbfmoule = document.createElement('div')
+        const divchartmou = document.getElementById('chartmtbfmoule')
+
+        divmtbfmoule.innerHTML =
+            "<canvas id='mychartmtbfmoule' width='350px' height='220px'></canvas>"
+        divchartmou.appendChild(divmtbfmoule)
+
+        function BuildChart(mois, values, obj) {
+            var ctxtemps = document.getElementById('mychartmtbfmoule')
+                .getContext(
+                    '2d');
+
+            var myChart = new Chart(ctxtemps, {
+                type: 'bar',
+                data: {
+                    labels: mois,
+                    datasets: [{
+                        label: "Objective %",
+                        backgroundColor: 'transparent',
+                        borderColor: 'red',
+                        borderWidth: '2',
+                        data: obj,
+                        type: 'line',
+                        pointBackgroundColor: 'red',
+                        pointStyle: 'line',
+
+                    }, {
+                        label: "MTBF",
+                        backgroundColor: 'rgba(175, 92, 192, 0.4)',
+
+                        borderColor: 'rgb(175, 92, 192,1)',
+
+                        data: values,
+                        pointStyle: 'line',
+
+
+                    }]
+                },
+                options: {
+
+                    scales: {
+                          y: {
+                min: 95,
+            },
+                        xAxes: [{
+                            maxBarThickness: 60,
+
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }],
+                    },
+                    tooltips: {
+                        mode: 'index',
+                    },
+                    legend: {
+                        display: true,
+
+
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'MTBF des moules de '+{{year|safe}}
+                        }
+                    }
+                }
+
+            });
+
+            return myChart;
+        }
+
+
+        var values = {{mtbfmoule | safe}}
+
+        var obj = ['97', '97', '97', '97', '97', '97', '97', '97', '97', '97', '97', '97']
+
+        var mois = ['jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sep', 'Oct', 'Nov', 'Dec']
+
+        BuildChart(mois, values, obj)
+    </script>
+
+    <script>
+        //pareto :
+        const divmtbfmachine = document.createElement('div')
+        const divchartma = document.getElementById('chartmtbfmachine')
+
+        divmtbfmachine.innerHTML =
+            "<canvas id='mychartmtbfmachine' width='350px' height='220px'></canvas>"
+        divchartma.appendChild(divmtbfmachine)
+
+        function BuildChart(mois, values, obj) {
+            var ctxtemps = document.getElementById('mychartmtbfmachine')
+                .getContext(
+                    '2d');
+
+            var myChart = new Chart(ctxtemps, {
+                type: 'bar',
+                data: {
+                    labels: mois,
+                    datasets: [{
+                        label: "Objective %",
+                        backgroundColor: 'transparent',
+                        borderColor: 'red',
+                        borderWidth: '2',
+                        data: obj,
+                        type: 'line',
+                        pointBackgroundColor: 'red',
+                        pointStyle: 'line',
+
+                    }, {
+                        label: "MTBF",
+                        backgroundColor: 'rgba(175, 92, 192, 0.4)',
+
+                        borderColor: 'rgb(175, 92, 192,1)',
+
+                        data: values,
+                        pointStyle: 'line',
+
+
+                    }]
+                },
+                options: {
+
+                    scales: {
+                          y: {
+                min: 95,
+            },
+                        xAxes: [{
+                            maxBarThickness: 60,
+
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }],
+                    },
+                    tooltips: {
+                        mode: 'index',
+                    },
+                    legend: {
+                        display: true,
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'MTBF des machines de '+{{year|safe}}
+                        }
+                    }
+                }
+
+            });
+
+            return myChart;
+        }
+
+
+        var values = {{mtbfmachine | safe}}
+
+        var obj = ['97', '97', '97', '97', '97', '97', '97', '97', '97', '97', '97', '97']
+ 
+        var mois = ['jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sep', 'Oct', 'Nov', 'Dec']
+  
+        BuildChart(mois, values, obj)
+    </script>
+    {% endblock %}
+</div>
+</div>
+{% block script %}
+
+<script>
+    $("#types-indicateur").change(function () {
+        indicateurValue = $("#types-indicateur").val()
+
+
+        if (indicateurValue == "temps_maintenance") {
+            $("#tableTemps").show()
+            $("#tablemttr").hide()
+            $("#tablemtbf").hide()
+
+        } else if (indicateurValue == "---------") {
+            $("#tableTemps").show()
+            $("#tablemttr").show()
+            $("#tablemtbf").show()
+
+        } else if (indicateurValue == "MTTR") {
+            $("#tableTemps").hide()
+            $("#tablemttr").show()
+            $("#tablemtbf").hide()
+
+        } else if (indicateurValue == "MTBF") {
+            $("#tableTemps").hide()
+            $("#tablemttr").hide()
+            $("#tablemtbf").show()
+
+        }
+
+    })
+
+    window.html2canvas = html2canvas
+
+    $('#pdf').click(function () {
+        html2canvas(document.querySelector("#text"), {
+            allowTaint: true,
+            useCORS: true,
+            scale: 30,
+        }).then(canvas => {
+            var img = canvas.toDataURL('image/png')
+            var doc = new jsPDF();
+            doc.setFont('times')
+            doc.setFontType('italic')
+            doc.setFontSize(20)
+                html2canvas(document.querySelector("#logo")).then(canvas => {
+                var charts = canvas.toDataURL('image/png')
+     
+                doc.addImage(charts, 'PNG', 10, 10, 32, 15);
+            })
+            doc.setTextColor(255, 0, 0)
+            doc.text(80, 20, 'Les indicateurs')
+            doc.setLineWidth(0.5)
+            doc.line(10, 30, 200, 30)
+            doc.addImage(img, 'PNG', 10, 40, 190, 100);
+           
+ html2canvas(document.querySelector("#char")).then(canvas => {
+     doc.addPage("a4","landscape");
+                var charts = canvas.toDataURL('image/png')
+     
+                doc.addImage(charts, 'PNG', 10, 20, 290, 180);
+            
+           window.open(doc.output('bloburl'))       
+            })
+        });
+
+
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,150 @@
+ {% extends "base.html" %}
+
+ {%load static%}
+ {% block head %}
+
+ <title>Modifier un équipement</title>
+ {% endblock %}
+
+ {% block body %}
+
+ <body>
+     <a href="/eq_index"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+
+     <div class="container" style="margin: 50px ; margin-left: 400px">
+         {% if messages %}
+         <ul class="messages">
+             {% for message in messages %}
+
+             <div class="sufee-alert alert with-close alert-primary alert-dismissible fade show" role="alert">
+                 <span class="badge badge-pill badge-primary">Success</span>
+                 {{ message }}
+                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+
+
+             </div>
+             {% endfor %}
+         </ul>
+         {% endif %}
+         <div class="col-lg-8">
+             <div class="card">
+                 <div class="card-header">
+                     <strong>Modifier un equipement</strong>
+                 </div>
+                 <div class="card-body card-block">
+                     <form action={% url "update" eq.id %} method="POST" enctype="multipart/form-data"
+                         class="form-horizontal">
+                         {% csrf_token %}
+
+                         <div class="row form-group">
+                             <div class="col col-md-3">
+                                 <label for="text-input" class=" form-control-label">ref equipement</label>
+                             </div>
+                             <div class="col-12 col-md-9">
+
+                                 <input type="text" class="form-control" id="ref_equipement" name="ref_equipement"
+                                     value={{eq.ref_equipement}}>
+
+
+                             </div>
+
+                         </div>
+                         <div class="row form-group">
+                             <div class="col col-md-3">
+                                 <label for="text-input" class=" form-control-label">Serie d'equipement</label>
+                             </div>
+                             <div class="col-12 col-md-9">
+                                 <input type="text" class="form-control" name="serie_equipement" id="serie_equipement"
+                                     value={{eq.serie_equipement}}>
+                             </div>
+                         </div>
+
+                         <div class="row form-group">
+                             <div class="col col-md-3">
+                                 <label for="text-input" class=" form-control-label">type d'equipement</label>
+                             </div>
+                             <div class="col-12 col-md-9">
+                                 <select class="form-control" id="type_equipement" name="type_equipement">
+                                     <option selected="selected" value={{eq.type_equipement}}>{{eq.type_equipement}}
+                                     </option>
+                                     {% for ty_list in ty %}
+                                     <option value="{{ty_list}}">{{ty_list.name}}</option>
+
+                                     {% endfor %}
+
+                                 </select>
+                             </div>
+                         </div>
+
+                         <div class="row form-group">
+                             <div class="col col-md-3">
+                                 <label for="text-input" class=" form-control-label">Emplacement d'équipement</label>
+                             </div>
+                             <div class="col-12 col-md-9">
+                                 <input type="text" class="form-control" id="emplacement_equipement"
+                                     name="emplacement_equipement" value={{eq.emplacement_equipement}}>
+                             </div>
+                         </div>
+
+                         <div class="row form-group">
+                             <div class="col col-md-3">
+                                 <label for="text-input" class=" form-control-label">Designation d'équipement</label>
+                             </div>
+                             <div class="col-12 col-md-9">
+                                 <input type="text" class="form-control" id="designation_equipement"
+                                     name="designation_equipement" value={{eq.designation_equipement}}>
+
+                             </div>
+                         </div>
+
+                         {% if eq.type_equipement == "moule" %}
+
+                         <div class="row form-group">
+                             <div class="col col-md-3">
+                                 <label for="text-input" class=" form-control-label">Client de moule</label>
+                             </div>
+                             <div class="col-12 col-md-9">
+                                 <input type="text" class="form-control" id="client_equipement" name="client_equipement"
+                                     value={{eq.client_equipement}}>
+
+                             </div>
+                         </div>
+                         {%endif%}
+
+                         <div class="row form-group">
+                             <div class="col col-md-3">
+                                 <label for="text-input" class=" form-control-label">date de mise en marche</label>
+                             </div>
+                             <div class="col-12 col-md-9">
+                                 <input type="date" class="form-control" id="date_debut_fonctionnement_equipement"
+                                     name="date_debut_fonctionnement_equipement"
+                                     value={{eq.date_debut_fonctionnement_equipement}}>
+                             </div>
+                         </div>
+
+
+                 </div>
+                 <div class="card-footer">
+                     <button type="submit" class="btn btn-primary btn-sm">
+                         <i class="fa fa-dot-circle-o"></i> Enregistrer
+                     </button>
+                     <button type="reset" class="btn btn-danger btn-sm">
+                         <i class="fa fa-ban"></i> Effacer
+                     </button>
+                 </div>
+             </div>
+
+         </div>
+
+
+
+
+     </div>
+
+     </form>
+
+ </body>
+
+ {% endblock %}

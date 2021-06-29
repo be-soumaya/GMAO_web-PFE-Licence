@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+{%load static%}
+{% block head %}
+
+<title>Le planning annuel</title>
+<style>
+
+
+  th {
+    font-size: 10px;
+    border-bottom: 1px solid black;
+    
+
+  }
+
+  td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+
+
+
+  }
+form input, form button, form select {border: 1px #DDD solid; padding: 2px; font-size: 10px; margin-right: 5px;}
+form button {padding: 2px 10px;}
+.none {display: none;}
+.temp-row td {text-align: center;}
+</style>
+
+   
+{% endblock %}
+
+{% block body %}
+
+
+<a href="/home"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+
+<center>
+  <h4 style="font-size:40px ;font-family: 'Josefin Sans', sans-serif" class="title-5 ml-5 mt-3 text-center">Le planning
+    annuel {{year}} des {{a}}s</h4>
+</center>
+<div class="row">
+<div class="col-md-5">
+ 
+<form method="post" action="" id="formType">
+  {% csrf_token %}
+  <input type="hidden" name="forms" value="formType">
+  <div>
+    <h6>Choisir le type des équipements :</h6>
+    <div class="row form-group">
+
+      <div class="col-2 col-md-4">
+        <select class="form-control custom-select" id="types" name="type" >
+          <option value=""></option>
+          <option value="Moule">Moule</option>
+          <option value="Machine">Machine</option>
+          <option value="Périphérique">Pérépherique</option>
+
+        </select>
+      </div>
+    </div>
+    
+  </div>
+  <input type="submit" value="chercher" class="btn btn-primary btn-sm"><br>
+</form>
+</div>
+<div class="col-md-2 mt-4">
+ <form action="{% url 'cell_position' %}" class="form" style="display:none" id="formIntervalle" method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="forms" value="formIntervalle">
+         <select name="intervalle" class="form-control form-control-sm mb-1" id="intervalle">
+      <option value="Mensuelle">Mensuelle</option>
+      <option value="Trimestrielle">Trimestrielle</option>
+      <option value="Semestrielle">Semestrielle</option>
+      <option value="Annuelle">Annuelle</option>
+      </select>
+  <input type="submit" class="btn btn-sm btn-success" value="Ajouter">
+    <button type="button" id="deleteplan" class="btn btn-sm btn-danger">Supprimer</button>
+    </form>
+</div>
+
+</div>
+
+<div class="container" style="width: 15cm;
+    float: right;
+    margin-right: -286px;">
+  <div class="row">
+    <div class="col-6 col-sm-3"><i style="color:#ffff4d" class="fas fa-square"></i> Mensuelle</div>
+    <div class="col-6 col-sm-3"><i style="color:rgb(139, 41, 41)" class="fas fa-square"></i> Annuelle</div>
+
+    <!-- Force next columns to break to new line -->
+    <div class="w-100"></div>
+
+    <div class="col-6 col-sm-3"><i style="color:#4384da" class="fas fa-square"></i> Semestrielle</div>
+    <div class="col-6 col-sm-3"><i style="color:rgb(110, 235, 110)" class="fas fa-square"></i> Trimestrielle</div>
+  </div>
+</div>
+<br>
+ 
+    <div style="overflow-x: scroll; width:100%">
+      <table id="MyTable" class="table table-borderless " style="display: block-inline; margin-top:1cm ;">
+        <thead class="table-success">
+          <tr>
+            <th style="border-right:1px solid black;visibility: hidden;"></th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Janvier</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Fevrier</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Mars</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Avril</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Mai</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Juin</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Juillet</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Aout</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Septembre</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Octobre</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Novembre</th>
+            <th style="border-bottom: 1px solid black;border-right:3px solid darkblue" colspan=4>Decembre</th>
+            
+
+          </tr>
+          <tr>
+            <th style="border-right:1px solid black; visibility: hidden;"></th>
+            <th style="border:1px solid black" id="jan1">1</th>
+            <th style="border:1px solid black" id="jan2">2</th>
+            <th style="border:1px solid black" id="jan3">3</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="jan4">4</th>
+            <th style="border:1px solid black" id="fev1">5</th>
+            <th style="border:1px solid black" id="fev2">6</th>
+            <th style="border:1px solid black" id="fev3">7</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="fev4">8</th>
+            <th style="border:1px solid black" id="mar1">9</th>
+            <th style="border:1px solid black" id="mar2">10</th>
+            <th style="border:1px solid black" id="mar3">11</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="mar4">12</th>
+            <th style="border:1px solid black" id="avr1">13</th>
+            <th style="border:1px solid black" id="avr2">14</th>
+            <th style="border:1px solid black" id="avr3">15</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="avr4">16</th>
+            <th style="border:1px solid black" id="may1">17</th>
+            <th style="border:1px solid black" id="may2">18</th>
+            <th style="border:1px solid black" id="may3">19</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="may4">20</th>
+            <th style="border:1px solid black" id="juin1">21</th>
+            <th style="border:1px solid black" id="juin2">22</th>
+            <th style="border:1px solid black" id="juin3">23</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="juin4">24</th>
+            <th style="border:1px solid black" id="juil1">25</th>
+            <th style="border:1px solid black" id="juil2">26</th>
+            <th style="border:1px solid black" id="juil3">27</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="juil4">28</th>
+            <th style="border:1px solid black" id="aout1">29</th>
+            <th style="border:1px solid black" id="aout2">30</th>
+            <th style="border:1px solid black" id="aout3">31</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="aout4">32</th>
+            <th style="border:1px solid black" id="sep1">33</th>
+            <th style="border:1px solid black" id="sep2">34</th>
+            <th style="border:1px solid black" id="sep3">35</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="sep4">36</th>
+            <th style="border:1px solid black" id="oct1">37</th>
+            <th style="border:1px solid black" id="oct2">38</th>
+            <th style="border:1px solid black" id="oct3">39</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="oct4">40</th>
+            <th style="border:1px solid black" id="nov1">41</th>
+            <th style="border:1px solid black" id="nov2">42</th>
+            <th style="border:1px solid black" id="nov3">43</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="nov4">44</th>
+            <th style="border:1px solid black" id="dec1">45</th>
+            <th style="border:1px solid black" id="dec2">46</th>
+            <th style="border:1px solid black" id="dec3">47</th>
+            <th style="border:1px solid black;border-right:3px solid darkblue" id="dec4">48</th>
+
+          </tr>
+        </thead>
+        <tbody>
+
+        
+ {% for eq_list in qs %}
+
+        <tr>
+         <th scope="rowgroup" style="border:1px solid black" class="refs" id="{{eq_list.id}}">{{ eq_list.ref_equipement}} </th>
+            <td style="border:1px solid black" ></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black"></td>
+            <td style="border:1px solid black;border-right:3px solid darkblue"></td>
+      
+         </tr>
+        {%endfor%}
+
+
+          </tbody>
+
+      </table>
+     
+  </div>
+     
+ {% endblock %}
+{% block script%}
+  <script>
+        
+
+   var $form  = $('.form')
+    $table = $('#MyTable');
+/*$('td').on('click', function() {
+    var $this = $(this);
+    var $input = $('<input>',{
+        value: $this.text(),
+        type: 'text',
+        id : 'etat_planning',
+        style: 'width:0.4cm;height:0.3cm;',
+        blur: function() {
+           $this.text(this.value);
+        },
+        keyup: function(e) {
+          
+           if (e.which === 13) $input.blur();
+        }
+    }).appendTo( $this.empty() ).focus();
+
+});
+*/
+
+$table.on('click', 'td', function(e) {
+  $(this).css('background-color','#d3d3d3')
+$(this).prop('disabled',true);
+  $form.show();
+   var index = $(this).parents('tr').index();
+    var ids = $('.refs')[index].id
+
+     var col = $(this).parent().children().index($(this));
+  var row = $(this).parent().parent().children().index($(this).parent());
+$('#deleteplan').on('click', function(e){
+ $.ajax({
+        type: "GET",
+        url: "{% url 'deletePlan' %}",
+        data: {
+            "row" : row,
+            "col" : col,
+            "ids" : ids,
+        },
+        dataType: "json",
+        success: function (data) {
+    
+            // any process in data
+        },
+        failure: function () {
+            alert("erreur");
+        }
+    });
+history.go(0)
+
+})
+$('#formIntervalle').on('submit', function(e){
+
+  var intervalle = $('#intervalle').val()
+  e.preventDefault()
+var today = new Date()
+var yyyy = today. getFullYear();
+
+$.ajax({
+        type: "GET",
+        url: "{% url 'cell_position' %}",
+        data: {
+            "row": row,
+            "col": col,
+            "ids" : ids,
+            "intervalle" : intervalle,
+            "yyyy" : yyyy,
+        },
+        dataType: "json",
+        success: function (data) {
+    
+            // any process in data
+    location.reload(true);
+        },
+        failure: function () {
+            alert("erreur");
+        }
+    });
+    
+   
+})
+
+  /*  $table.find('tr.temp-row').remove();
+    $(this).closest('tr').after(function() {
+        var $tr = $('<tr class="temp-row"><td colspan="4"></td></tr>');
+        return $tr.find('td').html($form);
+    });*/
+});
+
+  var tableTd = $("#MyTable tbody")[0];
+
+  for( var i =0 ; i <{{cellsArray|safe}}.length;i++ ){
+
+var row = {{cellsArray|safe}}[i][0]
+var col = {{cellsArray|safe}}[i][1]
+  var cell = tableTd.rows[row].cells[col];  
+  var $cell = $(cell)
+
+if({{intervallessArray|safe}}[i]
+==="Mensuelle"){
+  $cell.css('background-color','#ffff4d')
+}
+
+if({{intervallessArray|safe}}[i]
+==="Trimestrielle"){
+  $cell.css('background-color','rgb(110, 235, 110)')
+}  
+if({{intervallessArray|safe}}[i]
+==="Semestrielle"){
+  $cell.css('background-color','#4384da')
+}
+if({{intervallessArray|safe}}[i]
+==="Annuelle"){
+  $cell.css('background-color','rgb(139, 41, 41)')
+}
+  }
+ 
+    
+      </script>
+ {% endblock %}
+ 

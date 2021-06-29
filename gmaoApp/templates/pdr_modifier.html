@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{%load static%}
+{% block head %}
+
+<title>Modifier une PdR</title>
+
+{% endblock %}
+
+{% block body %}
+
+<body>
+    <a href="/pdr_index"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+
+    <div class="container" style="margin: 50px ; margin-left: 400px">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+
+            <div class="sufee-alert alert with-close alert-primary alert-dismissible fade show" role="alert">
+                <span class="badge badge-pill badge-primary">Success</span>
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Modifier une PdR</strong>
+                </div>
+                <div class="card-body card-block">
+                    <form action={% url "updatePdr" pdr.id %} method="POST" enctype="multipart/form-data"
+                        class="form-horizontal">
+                        {% csrf_token %}
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Ref.</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+
+                                <input type="text" class="form-control" id="ref_pdr" name="ref_pdr"
+                                    value={{pdr.ref_pdr}} required>
+
+                            </div>
+
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Designation </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" class="form-control" id="designation_pdr" name="designation_pdr"
+                                    value={{pdr.designation_pdr}}>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Categorie</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control" id="categorie_pdr" name="categorie_pdr"
+                                    value={{pdr.categorie_pdr}} required>
+                                    <option selected="selected" value={{pdr.categorie_pdr}}>{{pdr.categorie_pdr}}
+                                    </option>
+                                    <option value="machine">Machine</option>
+                                    <option value="moule">Moule</option>
+                                    <option value="peripherique">périphérique</option>
+
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Stock actuel</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="number" min="0" class="form-control" id="quantite_pdr "
+                                    value={{pdr.quantite_pdr}} name="quantite_pdr ">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Stock minimal</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="number" min="0" class="form-control" id="min_pdr" name="min_pdr"
+                                    value={{pdr.min_pdr}}>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Prix unitaire</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <div class="input-group mb-3">
+                                    {% load l10n %}
+
+                                    {% localize off %}
+                                    <input type="text" class="form-control" id="prix_pdr" name="prix_pdr"
+                                        value={{pdr.prix_pdr}} aria-label="Amount (to the nearest dollar)">
+                                    {% endlocalize %}
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">€</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Emplacement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" class="form-control" id="emplacement_pdr" name="emplacement_pdr"
+                                    value={{pdr.emplacement_pdr}}>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Fournisseur</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" class="form-control" id="fournisseur_pdr" name="fournisseur_pdr"
+                                    value={{pdr.fournisseur_pdr}}>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Contact de fournisseur</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="email" class="form-control" id="contact_fournisseur_pdr"
+                                    name="contact_fournisseur_pdr" value={{pdr.contact_fournisseur_pdr}}>
+                            </div>
+                        </div>
+
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fa fa-dot-circle-o"></i> Enregistrer
+                    </button>
+                    <button type="reset" class="btn btn-danger btn-sm">
+                        <i class="fa fa-ban"></i> Effacer
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    </form>
+
+
+</body>
+
+{% endblock %}

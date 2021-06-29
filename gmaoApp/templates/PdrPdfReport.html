@@ -1,0 +1,100 @@
+ <html>
+
+ <head>
+     {%load static%}
+  
+
+     <style>
+
+         
+   td {
+       padding-bottom: 2px;
+       padding-top: 2px;
+       margin-left: 0;
+     }
+
+     th {
+       padding-top: 2px;
+     }
+         @page {
+             margin: 0.5cm;
+         
+             @frame footer_frame {
+                 /* Static frame */
+                 -pdf-frame-content: footer_content;
+                 left: 50pt;
+                 width: 512pt;
+                 top: 772pt;
+                 height: 20pt;
+             }
+         }
+     </style>
+ </head>
+
+ <body  style="margin: 5px">
+   
+<img width="150" height="50" style="display:inline-block;margin-right:100px" src="C:\Users\HP\Documents\S6\PFE\coding\gmaoWeb\backend\gmaoApp\static\assets\img\HMT-logo-bg.png">
+<span style="font-size:30px ;font-family: 'Josefin Sans', serif ; font-weight:bold ;margin-bottom =0"><span style="color:white">---------</span>Suivi Stock des
+         PdRs</span>
+     
+              <hr>
+
+     <div id="footer_content">
+         <pdf:pagenumber>
+             / <pdf:pagecount>
+     </div> <div >
+
+     <div style="font-size:15px  ;padding-top: 15px ; margin-bottom: 2px"  >
+         <p>Total nombre des PdRs : <span style="font-weight:bold">{{ Nbrpdr }}</span></p>
+
+
+     </div>
+     <div style="overflow-x:auto;">
+         <table  id="pdr_table" border="1">
+             <thead >
+                 <tr>
+
+                     <th>Article</th>
+                     <th>Ref</th>
+                     <th>Designation</th>
+                     <th>Categorie</th>
+                     <th>Stock actuel</th>
+                     <th>Stock minimal </th>
+                     <th>Prix unitaire</th>
+                     <th>Emplacement </th>
+                     <th>Fournisseur</th>
+                     <th>Contact de Fournisseur</th>
+                 </tr>
+             </thead>
+             <tbody>
+
+
+                 {% for pdr_list in pdr %}
+
+                 <tr style="
+    {% if pdr_list.categorie_pdr == 'moule' %}background-color:rgb(253, 230, 211){%endif%}{% if pdr_list.categorie_pdr == 'machine'%}background-color:rgb(227, 250, 198){%endif%}{% if pdr_list.categorie_pdr == 'peripherique'%}background-color:rgb(211, 253, 237){%endif%} "
+                     >
+                    <td style="width:1cm">{{ forloop.counter}}</td>
+                     <td style="width:1.5cm">{{ pdr_list.ref_pdr}}</td>
+                     <td>{{ pdr_list.designation_pdr }}</td>
+                     <td>{{ pdr_list.categorie_pdr }}</td>
+                     <td style="width:1cm ;{%if pdr_list.quantite_pdr < pdr_list.min_pdr %}background-color:#fc5c40{%endif%}{%if pdr_list.quantite_pdr == pdr_list.min_pdr %}background-color:#fcef40{%endif%}{%if pdr_list.quantite_pdr > pdr_list.min_pdr %}background-color:#74fa59{%endif%}" >{{ pdr_list.quantite_pdr }}</td>
+                     <td style="width:1.1cm" >{{ pdr_list.min_pdr }}</td>
+                     <td style="width:2cm">{{ pdr_list.prix_pdr }} €</td>
+                     <td style="width:2cm">{{ pdr_list.emplacement_pdr }}</td>
+                     <td style="width:2cm">{{ pdr_list.fournisseur_pdr }}</td>
+  <td style="width:4cm"><a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ pdr_list.contact_fournisseur_pdr }}">{{ pdr_list.contact_fournisseur_pdr }}</a></td>
+
+                 </tr>
+                 {% empty %}
+                 Aucune PDR !
+                 {% endfor %}
+                 <tr>
+                     <td colspan="6" > total </td>
+                    
+                     <td> {{ total }} €</td>
+                 </tr>
+             </tbody>
+         </table>
+     </div>
+     

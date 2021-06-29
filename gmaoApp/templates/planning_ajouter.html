@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{%load static%}
+{% block head %}
+
+<title>Créer le planning annuel</title>
+{% endblock %}
+
+{% block body %}
+
+<body>
+
+    <a href="/home"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+
+
+    <div class="container" style="margin: 50px ; margin-left: 400px">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <div style="width:500px" class="ml-4 sufee-alert alert with-close alert-primary alert-dismissible fade show"
+                role="alert">
+
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Créer le planning annuel</strong>
+                </div>
+                <div class="card-body card-block">
+
+                    <form action={% url "planning_save" %} method="POST" enctype="multipart/form-data"
+                        class="form-horizontal" id="eq-form">
+                        {% csrf_token %}
+
+                        <div class="row form-group" id="types">
+                            <div class="col col-md-3">
+
+                                <label for="text-input" class=" form-control-label">Type d'équipement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control custom-select" id="types-data-box" name="type_eq" required>
+                                    <option value=""></option>
+                               
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" id="equipements">
+                            <input type="hidden" name="equipement">
+                            <div class="col col-md-3">
+
+                                <label for="text-input" class=" form-control-label" id="equipement-text">Ref
+                                    d'équipement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control custom-select" id="equipements-data-box" id="ref_equipement"
+                                    name="ref_equipement" required>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" id="intervalles">
+                            <div for="text-input" class="col col-md-3">
+                                <label class=" form-control-label">Intervalle de maintenance</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control" id="intervalle_maintenance" name="intervalle_maintenance">
+                                    <option value=""></option>
+                                    <option value="Mensuelle">Mensuelle</option>
+                                    <option value="Trimestrielle">Trimestrielle</option>
+                                    <option value="Semestrielle">Semestrielle</option>
+                                    <option value="Annuelle">Annuelle</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row form-group" style="display:none" id="triETsem">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">Semaine de maintenance</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+<input type="week"  class="form-control"  id="semaines-data-box_triETseme"
+                                    name="semaine_maintenance_triETseme">
+                           
+                            </div>
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">premiere mois </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="month" class="form-control" id="semaine_maintenance_triETseme"
+                                    name="premiere_mois_maintenance"> </div>
+                        </div>
+
+
+                        <div class="row form-group" style="display:none" id="mensuel">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">Semaine de maintenance</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control" id="semaines-data-box_mens"
+                                    name="semaine_maintenance_mensuelM">
+                                    <option value=""></option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="row form-group" style="display:none" id="annuel">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">mois de maintenance</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="month" class="form-control" id="semaines-data-box"
+                                    name="premiere_mois_maintenanceA"> </div>
+                                    <div class="col col-md-3">
+                                <label class=" form-control-label">Semaine de maintenance</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control" 
+                                    name="semaine_maintenance_mensuel">
+                                    <option value=""></option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fa fa-dot-circle-o"></i> Ajouter
+                            </button>
+                            <button type="reset" class="btn btn-danger btn-sm">
+                                <i class="fa fa-ban"></i> Effacer
+                            </button>
+                        </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        </form>
+        {% block script %}
+
+        <script>
+            const typesDataBox = document.getElementById("types-data-box")
+            const typeInput = document.getElementById('types')
+            const intervalleInput = document.getElementById('intervalles')
+            const equipementsDataBox = document.getElementById("equipements-data-box")
+            const semainesDataBox = document.getElementById("semaines-data-box")
+            const semainesMensDataBox = document.getElementById("semaines-data-box_mens")
+            const semainesTriSemDataBox = document.getElementById("semaines-data-box_triETseme")
+            const equipementInput = document.getElementById('equipements')
+            const equipementText = document.getElementById('equipement-text')
+            $.ajax({
+                type: 'GET',
+                url: '/type_json/',
+                success: function (response) {
+                    const typesData = response.data
+                    typesData.map(item => {
+                        const option = document.createElement('option')
+                        option.textContent = item.name
+                        option.setAttribute('value', item.name)
+                        typesDataBox.appendChild(option)
+                    })
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            })
+
+            typeInput.addEventListener('change', e => {
+                const selectedType = e.target.value
+
+                equipementsDataBox.innerHTML = ""
+                $.ajax({
+                    type: 'GET',
+                    url: `/equipement_json/${selectedType}/`,
+                    success: function (response) {
+                        const equipementsData = response.data
+                        equipementsData.map(item => {
+                            const option = document.createElement('option')
+                            option.textContent = item.ref_equipement
+                            option.setAttribute('value', item.ref_equipement)
+                            equipementsDataBox.appendChild(option)
+                        })
+
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                })
+            })
+
+            intervalleInput.addEventListener('change', e => {
+                console.log(e.target.value)
+                const selectedIntervalle = e.target.value
+                semainesDataBox.innerHTML = ""
+
+                $.ajax({
+                    type: 'GET',
+                    url: `/intervalle_json/${selectedIntervalle}`,
+                    success: function (response) {
+                        console.log(response.data)
+                        const intervallesData = response.data
+                        if (selectedIntervalle == 'Semestrielle' || selectedIntervalle ==
+                            'Trimestrielle') {
+                            $("#mensuel").hide()
+                            $("#annuel").hide()
+                            $("#triETsem").css('display', 'flex')
+                        } else if (selectedIntervalle == 'Annuelle') {
+                            $("#mensuel").hide()
+                            $("#triETsem").hide()
+                            $("#annuel").css('display', 'flex')
+                        } else if (selectedIntervalle == 'Mensuelle') {
+                            $("#triETsem").hide()
+                            $("#annuel").hide()
+                            $("#mensuel").css('display', 'flex')
+                        }
+
+
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                })
+            })
+        </script>
+        {% endblock %}
+
+</body>
+
+{% endblock %}

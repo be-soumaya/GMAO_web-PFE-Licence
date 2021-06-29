@@ -1,0 +1,121 @@
+<html>
+
+ <head>
+     {%load static%}
+  
+
+     <style>
+
+         
+
+   td {
+       padding-bottom: 2px;
+       padding-top: 2px;
+       margin-left: 0;
+     }
+     
+
+     th {
+       padding-top: 2px;
+     }
+         @page {
+             margin: 0.5cm;
+         
+             @frame footer_frame {
+                 /* Static frame */
+                 -pdf-frame-content: footer_content;
+                 left: 50pt;
+                 width: 512pt;
+                 top: 772pt;
+                 height: 20pt;
+             }
+         }
+     </style>
+ </head>
+
+ <body  style="margin: 5px">
+   
+<img width="150" height="50" style="float:left ;display:inline-block;margin-right:100px;display: flex;" src="C:\Users\HP\Documents\S6\PFE\coding\gmaoWeb\backend\gmaoApp\static\assets\img\HMT-logo-bg.png">
+
+
+  <h1 style="font-size:30px ;font-family: 'Josefin Sans', sans-serif ; text-align: center;margin-bottom =0;
+" >les indicateurs</h1>
+              <hr>
+
+<div class="row mt-3 pt-3">
+    <div class="col-md-7 ">
+<h2>TEMPS DE MAINTENANCE</h2>
+        <table class="table table-sm " id="myTableData" style="width:100% " border="1">
+            <thead >
+                <tr style="background-color:rgb(255, 200, 47)">
+                    <th style="text-align:center" >Temps total de maintenance corrective (h)</th>
+                    <th style="text-align:center">Temps total de maintenance préventive (h)</th>
+                    <th style="text-align:center">Total de temps (h) </th>
+                    <th style="text-align:center">Temps de maintenance (%)</th>
+                </tr>
+            </thead>
+            <tbody id="pareto-data-box" style="border:1px solid black">
+          
+        <tr>
+          <td>{{ totalcorr|floatformat:2 }}</td>
+          <td>{{ totalprev|floatformat:2 }}</td>
+          <td>{{total|floatformat:2}}</td>
+          <td>{{temps_maintenance|floatformat:2}}</td>
+
+        </tr>
+
+            </tbody>
+
+        </table>
+        <h2>MTTR</h2>
+        <table class="table table-sm table-bordered table-striped" id="myTableData" style="width:100% " border="1">
+            <thead style="background-color:rgb(255, 200, 47)">
+                <tr style="background-color:rgb(255, 200, 47)">
+                   
+                    <th style="text-align:center">Total de temps des arrêts(h) </th>
+                    <th style="text-align:center">Nombre des arrêts </th>
+                    <th style="text-align:center">MTTR (h)</th>
+                </tr>
+            </thead>
+            <tbody id="pareto-data-box" style="border:1px solid black">
+          
+        <tr>
+          <td>{{ totalcorr|floatformat:2 }}</td>
+          <td>{{nbrArretCorr}}</td>
+          <td>{{mttr|floatformat:2}}</td>
+      
+        </tr>
+
+            </tbody>
+
+        </table>
+        
+        <h2>MTBF</h2>
+        <table class="table table-sm table-bordered table-striped" id="myTableData" style="width:100% " border="1">
+            <thead style="background-color:rgb(255, 200, 47)">
+                <tr style="background-color:rgb(255, 200, 47)">
+                    <th style="text-align:center" >Total de temps de maintenance (h) </th>
+                    <th style="text-align:center">Total d'heures de fonctionnement (h) </th>
+                    <th style="text-align:center">MTBF (%)</th>
+                </tr>
+            </thead>
+            <tbody id="pareto-data-box" style="border:1px solid black">
+          
+        <tr>
+   
+          <td>{{total|floatformat:2}}</td>
+          <td>{{nbrFonc|floatformat:2}}</td>
+          <td>{{mtbf|floatformat:2}}</td>
+          
+
+        </tr>
+
+            </tbody>
+
+        </table>
+        </div>
+        </div>
+
+
+</body>
+</html>

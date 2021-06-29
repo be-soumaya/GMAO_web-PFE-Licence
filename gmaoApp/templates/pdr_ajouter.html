@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{%load static%}
+{% block head %}
+
+<title>Ajouter une PdR</title>
+
+
+<script>
+$(document).ready(function() {
+    $('select').select2({ width: '100%', placeholder: "Select an Option", allowClear: true });
+});
+</script>
+{% endblock %}
+
+{% block body %}
+
+<body>
+    <a href="/pdr_index"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+
+    <div class="container" style="margin: 50px ; margin-left: 400px">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="alert alert-primary" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header text-white" style="background-color:#6b6a6a">
+                    <strong> <i class="fas fa-plus"></i> Ajouter un PdR</strong>
+                </div>
+                <div class="card-body card-block  bg-light">
+                    <form action={% url "AjouterPdr" %} method="POST" enctype="multipart/form-data"
+                        class="form-horizontal">
+                        {% csrf_token %}
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Ref.</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+
+                                <input type="text" class="form-control" id="ref_pdr" name="ref_pdr" required>
+
+
+                            </div>
+
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Designation </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" class="form-control" id="designation_pdr" name="designation_pdr">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Categorie</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control custom-select " id="categorie_pdr" name="categorie_pdr"
+                                    required>
+                                    <option value=""></option>
+                                    <option value="machine">Machine</option>
+                                    <option value="moule">Moule</option>
+                                    <option value="peripherique">Périphérique</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Stock actuel</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="number" min="0" class="form-control" id="quantite_pdr "
+                                    name="quantite_pdr ">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Stock minimal</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="number" min="0" class="form-control" id="min_pdr" name="min_pdr">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Prix unitaire</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <div class="input-group mb-3">
+
+                                    <input type="text" placeholder="ex: 15.20" class="form-control" id="prix_pdr" name="prix_pdr"
+                                        aria-label="Amount (to the nearest dollar)">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">€</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Emplacement</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" class="form-control" id="emplacement_pdr" name="emplacement_pdr">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Fournisseur</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" class="form-control" id="fournisseur_pdr" name="fournisseur_pdr">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Email de fournisseur</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="email" class="form-control" id="contact_fournisseur_pdr"
+                                    name="contact_fournisseur_pdr">
+                            </div>
+                        </div>
+
+                    
+
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Ajouter
+                    </button>
+                    <button type="reset" class="btn btn-danger btn-sm">
+                        <i class="fa fa-ban"></i> Effacer
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    </form>
+
+</body>
+
+{% endblock %}

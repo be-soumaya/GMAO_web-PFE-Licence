@@ -1,0 +1,157 @@
+ {% extends "base.html" %}
+ {%load static%}
+ {% block head %}
+ 
+ 
+ <title>Suivi Stock des PdRs</title>
+
+ {% endblock %}
+
+ {% block body %}
+ 
+
+   <a href="/home"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+   <p style="font-style: italic;position:relative; left:1350px;">Date/Temps : <span id="datetime"></span></p>
+   <script>
+     var dt = new Date();
+     document.getElementById("datetime").innerHTML = dt.toLocaleString();
+   </script>
+   <h1 style="font-size:40px ;font-family: 'Josefin Sans', sans-serif" class="title-5 ml-5 mt-3 text-center">Suivi Stock des
+     PdRs </h1>
+
+   {% if messages %}
+   <ul class="messages">
+     {% for message in messages %}
+     <div style="width:500px" class="ml-4 sufee-alert alert with-close alert-primary alert-dismissible fade show"
+       role="alert">
+       {{ message }}
+       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+
+     </div>
+     {% endfor %}
+   </ul>
+   {% endif %}
+   <div class="table-data__tool">
+
+     <div class="table-data__tool-left">
+       <p>Nombre des PdRs : <span style="font-weight:bold">{{ Nbrpdr }}</span></p>
+       <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+       <i class="fas fa-filter"></i>  Filtrer la liste des PdRs  
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+       <form method="get">
+
+Ref  :  {{myFilter.form.ref_pdr}} 
+Categorie :  {{myFilter.form.categorie_pdr}}
+Quantite :  {{myFilter.form.quantite_pdr}}
+Filtrer quantite :  {{myFilter.form.quantite_select}}
+Emplacement :  {{myFilter.form.emplacement_pdr}}
+Fournisseur :  {{myFilter.form.fournisseur_pdr}}
+<br>
+<button class="au-btn au-btn-icon au-btn--blue au-btn--small">Appliquer le filtre</button>
+<button class="au-btn au-btn-icon  au-btn--small"><a href="/pdr_index">Supprimer le filtre</a></button>
+</form>
+      </div>
+    </div>
+  </div>
+  </div>
+
+     </div>
+
+     <div class="table-data__tool-right">
+
+       <a href="/createPdr"><button class="au-btn au-btn-icon au-btn--green au-btn--small">
+            <i class="fas fa-plus"></i>Ajouter</button> </a>
+       <a href="{% url 'Rapport des PDRs' %}"><button class="au-btn au-btn-icon au-btn--blue au-btn--small">
+           <i class="fad fa-download"></i>Telecharger PDF</button> </a>
+
+     </div>
+   </div>
+   <div class="table-responsive table-responsive-data2">
+     <table class="table table-data2" id="pdr_table">
+       <thead class="table-dark">
+         <tr>
+
+           <th style=" color:White">Article</th>
+           <th style=" color:White">Ref</th>
+           <th style="color:White">Designation</th>
+           <th style="color:White">Categorie</th>
+           <th style="color:White">Stock actuel</th>
+           <th style="color:White">Stock minimal </th>
+           <th style="color:White">Prix unitaire</th>
+           <th style="color:White">Emplacement </th>
+           <th style="color:White">Fournisseur</th>
+           <th style="color:White">Contact de Fournisseur</th>
+           <th></th>
+         </tr>
+       </thead>
+       <tbody>
+
+         {% for pdr_list in pdr %}
+
+         <tr
+           style="
+    {% if pdr_list.categorie_pdr == 'moule' %}background-color:rgb(253, 230, 211){%endif%}{% if pdr_list.categorie_pdr == 'machine'%}background-color:rgb(227, 250, 198){%endif%}{% if pdr_list.categorie_pdr == 'peripherique'%}background-color:#d6e5f8{%endif%} "
+           class="tr-shadow">
+
+           <td>{{ forloop.counter}}</td>
+           <td>{{ pdr_list.ref_pdr}}</td>
+           <td>{{ pdr_list.designation_pdr }}</td>
+           <td>{{ pdr_list.categorie_pdr }}</td>
+           <td id="color">
+             <form action={% url "updateQuaPdr" pdr_list.id %} method="POST">
+               {% csrf_token %}
+               <input type="number" min="0" class="form-control" id="quantite_pdr" value={{ pdr_list.quantite_pdr }}
+                 name="quantite_pdr"
+                 style="width:2cm; {%if pdr_list.quantite_pdr < pdr_list.min_pdr %}background-color:#fc5c40{%endif%}{%if pdr_list.quantite_pdr == pdr_list.min_pdr %}background-color:#fcef40{%endif%}{%if pdr_list.quantite_pdr > pdr_list.min_pdr %}background-color:#74fa59{%endif%}"> <span style="margin-left:0.7cm">{% if pdr_list.quantite_pdr == 0 %}<i style="color:red" class="fas fa-exclamation-triangle"></i>{%endif%} </span>
+             </form>
+           </td>
+           <td id="min_pdr">{{ pdr_list.min_pdr }}</td>
+           {% load l10n %}
+
+           {% localize off %}
+           <td style="width:4.5cm">{{ pdr_list.prix_pdr }} €</td>
+           {% endlocalize %}
+           <td>{{ pdr_list.emplacement_pdr }}</td>
+           <td>{{ pdr_list.fournisseur_pdr }}</td>
+           <td><a
+               href="https://mail.google.com/mail/?view=cm&fs=1&to={{ pdr_list.contact_fournisseur_pdr }}" target="_blank">{{ pdr_list.contact_fournisseur_pdr }}</a>
+           </td>
+
+           <td>
+             <div class="table-data-feature">
+
+               <a href="{% url 'modifierPdr' pdr_list.id %}"> <button class="item mr-4" data-toggle="tooltip"
+                   data-placement="top" title="Edit">
+                   <i class="zmdi zmdi-edit"></i>
+                 </button> </a>
+               <a href="{% url 'deletePdr' pdr_list.id %}"> <button class="item"
+                   onclick="return confirm('Confirmer la suppression');" data-toggle="tooltip" data-placement="top"
+                   title="Delete">
+                   <i class="zmdi zmdi-delete"></i>
+                 </button> </a>
+
+             </div>
+           </td>
+
+         </tr>
+         {% endfor %}
+         <tr>
+           <td colspan="6"> TOTAL </td>
+
+           <td> {{ total }} €</td>
+         </tr>
+       </tbody>
+     </table>
+   </div>
+
+
+
+ {% endblock %}

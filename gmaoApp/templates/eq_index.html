@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{%load static%}
+{% block head %}
+
+<title>Liste des équipements</title>
+{% endblock %}
+{% block body %}
+
+<body style="margin: 20px">
+
+
+
+  <a href="/home"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+  <h1 style="font-size:40px ;font-family: 'Josefin Sans', sans-serif" class="title-5 ml-5 mt-3 text-center">Liste des
+    équipements </h1>
+
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <div style="width:500px" class="ml-4 sufee-alert alert with-close alert-primary alert-dismissible fade show"
+      role="alert">
+
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+
+    </div>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <div class="table-data__tool">
+
+    <div class="table-data__tool-left">
+      <p>Nombre des équipements : {{ Nbreq }}</p>
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+              aria-expanded="true" aria-controls="collapseOne">
+              <i class="fas fa-filter"></i> Filtrer
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <form method="get">
+
+                Ref : {{myFilter.form.ref_equipement}}
+                Type : {{myFilter.form.type_equipement}}
+                Emplacement : {{myFilter.form.emplacement_equipement}}
+
+                <br>
+                <button class="au-btn au-btn-icon au-btn--blue au-btn--small">Appliquer le filtre</button>
+                <button class="au-btn au-btn-icon  au-btn--small"><a href="/eq_index">Supprimer le filtre</a></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-data__tool-right">
+    
+      <a href="/create"><button class="au-btn au-btn-icon au-btn--green au-btn--small">
+           <i class="fas fa-plus"></i>Ajouter</button> </a>
+      <a href="{% url 'Rapport des équipements' %}"><button class="au-btn au-btn-icon au-btn--blue au-btn--small">
+          <i class="fad fa-download"></i>Telecharger PDF</button> </a>
+            <a href="" data-bs-toggle="modal" data-bs-target="#modal-type"><button
+          class="btn btn-md  " style="background-color:#fcde35">
+          Ajouter un type</button> </a>
+
+    </div>
+  </div>
+  <div class="table-responsive table-responsive-data2">
+    <table class="table table-data2">
+      <thead class="table-dark">
+        <tr>
+
+          <th style=" color:White">#</th>
+          <th style=" color:White">Ref</th>
+          <th style="color:White">Serie</th>
+          <th style="color:White">Type</th>
+          <th style="color:White">emplacement</th>
+          <th style="color:White">Designation</th>
+          <th style="color:White">Client de moule</th>
+          <th style="color:White">Date de mise en marche</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        {% for eq_list in eq %}
+
+        <tr
+          style="
+    {% if eq_list.type_equipement_id == 1 %}background-color:rgb(253, 230, 211){%endif%}{% if eq_list.type_equipement_id == 2 %}background-color:rgb(227, 250, 198){%endif%}{% if eq_list.type_equipement_id == 3 %}background-color:rgb(211, 253, 237){%endif%} "
+          class="tr-shadow">
+          <td>{{ forloop.counter}}</td>
+          <td>{{ eq_list.ref_equipement }}</td>
+          <td>{{ eq_list.serie_equipement }}</td>
+          <td>{{ eq_list.type_equipement }}</td>
+          <td>{{ eq_list.emplacement_equipement }}</td>
+          <td>{{ eq_list.designation_equipement }}</td>
+          <td>{{ eq_list.client_equipement }}</td>
+          <td>{{ eq_list.date_debut_fonctionnement_equipement }}</td>
+          <td>
+            <div class="table-data-feature">
+
+              <a href="{% url 'modifier' eq_list.id %}"> <button class="item mr-4" data-toggle="tooltip"
+                  data-placement="top" title="Edit">
+                  <i class="zmdi zmdi-edit"></i>
+                </button> </a>
+              <a href="{% url 'delete' eq_list.id %}"> <button class="item"
+                  onclick="return confirm('Confirmer la suppression');" data-toggle="tooltip" data-placement="top"
+                  title="Delete">
+                  <i class="zmdi zmdi-delete"></i>
+                </button> </a>
+
+            </div>
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal fade" id="modal-type" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <form method="post" action="" class="create-form">
+          {% csrf_token %}
+
+          <div class="modal-header">
+            <h5 class="modal-title">Ajouter un type d'équipement</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {{form}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-primary">Enregistrer le type</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}
+</body>
+
+
+</html>

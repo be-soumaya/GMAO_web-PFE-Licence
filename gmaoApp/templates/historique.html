@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{%load static%}
+{% block head %}
+
+<title>Historique des interventions</title>
+{% endblock %}
+
+{% block body %}
+
+<a href="/home"><i class="ml-4 mt-3 zmdi zmdi-long-arrow-left zmdi-hc-2x"></i> </a>
+
+<h1 style="font-size:40px ;font-family: 'Josefin Sans', sans-serif" class="title-5 ml-5 mt-3 text-center">Historique des
+  interventions</h1>
+<div class="table-data__tool-right">
+
+</div>
+<div>
+  <h6>Choisir le type d'equipements :</h6>
+  <div class="row form-group" id="types">
+    <div class="col-2 col-md-2">
+      <select class="form-control custom-select" id="types-data-box" required>
+        <option value=""></option>
+      </select>
+    </div>
+  </div>
+</div>
+<a href="{% url 'pareto' %}" style="float:right"><button class="au-btn au-btn-icon au-btn--blue au-btn--small">Pareto
+    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 172 172"
+      style=" fill:#000000; padding-bottom:2px">
+      <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-linejoin="miter"
+        stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+        font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+        <path d="M0,172v-172h172v172z" fill="none" stroke="none" stroke-width="1"></path>
+        <g>
+          <path d="M28.66667,57.33333l28.66667,7.16667l28.66667,-25.08333l28.66667,7.16667l28.66667,-14.33333"
+            fill="none" stroke="#e84621" stroke-width="14.33333"></path>
+          <circle cx="8" cy="16" transform="scale(3.58333,3.58333)" r="3" fill="#e84621" stroke="none" stroke-width="1">
+          </circle>
+          <circle cx="16" cy="18" transform="scale(3.58333,3.58333)" r="3" fill="#e84621" stroke="none"
+            stroke-width="1"></circle>
+          <circle cx="24" cy="11" transform="scale(3.58333,3.58333)" r="3" fill="#e84621" stroke="none"
+            stroke-width="1"></circle>
+          <circle cx="32" cy="13" transform="scale(3.58333,3.58333)" r="3" fill="#e84621" stroke="none"
+            stroke-width="1"></circle>
+          <circle cx="40" cy="9" transform="scale(3.58333,3.58333)" r="3" fill="#e84621" stroke="none" stroke-width="1">
+          </circle>
+          <rect x="5" y="28" transform="scale(3.58333,3.58333)" width="6" height="14" fill="#89ffff" stroke="none"
+            stroke-width="1"></rect>
+          <rect x="13" y="32" transform="scale(3.58333,3.58333)" width="6" height="10" fill="#89ffff" stroke="none"
+            stroke-width="1"></rect>
+          <rect x="21" y="22" transform="scale(3.58333,3.58333)" width="6" height="20" fill="#89ffff" stroke="none"
+            stroke-width="1"></rect>
+          <rect x="29" y="26" transform="scale(3.58333,3.58333)" width="6" height="16" fill="#89ffff" stroke="none"
+            stroke-width="1"></rect>
+          <rect x="37" y="18" transform="scale(3.58333,3.58333)" width="6" height="24" fill="#89ffff" stroke="none"
+            stroke-width="1"></rect>
+        </g>
+      </g>
+    </svg> </button> </a>
+
+<div>
+  <h6>Choisir le Ref
+    d'équipement</h6>
+  <div class="row form-group" id="equipements">
+
+
+
+    <div class="col-2 col-md-2">
+      <select class="form-control custom-select" id="equipements-data-box" required>
+
+      </select>
+    </div>
+  </div>
+</div>
+<div class="table-data__tool">
+
+
+
+  
+
+
+  <div class="table-data__tool-left" id="NbrInter">
+
+  </div>
+</div>
+
+<div class="table-responsive table-responsive-data2">
+  <table class="table table-data2 table-striped" style=" border: 1px solid black;">
+    <thead class="table-dark">
+      <tr>
+        <th style="color:White; width:200px;">Date d'intervention </th>
+        <th style="color:White">Debut </th>
+        <th style="color:White">Fin </th>
+        <th style="color:White">Durée en mins</th>
+        <th style="color:White">Type d'intervention</th>
+        <th style="color:White; width:150px">Probléme</th>
+        <th style="color:White; width:200px">L'action</th>
+        <th style="color:White; width:150px">Les piéces utilisées</th>
+        <th style="color:White; width:150px">Résultat</th>
+        <th style="color:White; width:80px"></th>
+      </tr>
+    </thead>
+    <tbody id="interventions-data-box">
+
+    </tbody>
+  </table>
+</div>
+
+</div>
+
+
+{% endblock %}
+{% block script %}
+<script>
+  //type et ref des equipements
+  const typesDataBox = document.getElementById("types-data-box")
+  const typeInput = document.getElementById('types')
+  const refInput = document.getElementById('equipements')
+  const NbrInter = document.getElementById('NbrInter')
+  const equipementsDataBox = document.getElementById("equipements-data-box")
+  const interventionsDataBox = document.getElementById("interventions-data-box")
+  $.ajax({
+    type: 'GET',
+    url: '/type_json/',
+    success: function (response) {
+      const typesData = response.data
+      typesData.map(item => {
+        const option = document.createElement('option')
+        option.textContent = item.name
+        option.setAttribute('value', item.name)
+        typesDataBox.appendChild(option)
+      })
+    },
+    error: function (error) {
+      console.log(error)
+    }
+  })
+
+  typeInput.addEventListener('change', e => {
+    const selectedType = e.target.value
+
+    equipementsDataBox.innerHTML = ""
+    $.ajax({
+      type: 'GET',
+      url: `/equipement_json/${selectedType}/`,
+      success: function (response) {
+        const equipementsData = response.data
+        equipementsDataBox.innerHTML = "<option></option>"
+        equipementsData.map(item => {
+          const option = document.createElement('option')
+          option.textContent = item.ref_equipement
+          option.setAttribute('value', item.id)
+          equipementsDataBox.appendChild(option)
+        })
+
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    })
+  })
+
+
+  refInput.addEventListener('change', e => {
+    const selectedRef = e.target.value
+    interventionsDataBox.innerHTML = ""
+
+    $.ajax({
+
+      type: 'GET',
+      url: `/intervention_json/${selectedRef}/`,
+      success: function (response) {
+        const interventionsData = response.data
+  
+          var NbrInterl = response.data.length
+
+          NbrInter.innerHTML = "<p> Nombre des interventions : <span class=\"font-weight-bold\">" + NbrInterl + "</span> </p>"
+        interventionsData.map(item => {
+          const option = document.createElement('tr')
+          option.innerHTML =
+            "<td style='vertical-align: middle'>" + item.date_intervention + "</td>" +
+            "<td>" + item.debut_intervention + "</td>" +
+            "<td>" + item.fin_intervention + "</td>" +
+            "<td>" + item.duree_intervention + "</td>" +
+            "<td>" + item.type_intervention + "</td>" +
+            "<td>" + item.cause_intervention + "</td>" +
+            "<td>" + item.actions_intervention + "</td>" +
+            "<td>" + response.pdr_inter_dict[item.id] + "</td>" +
+            "<td>" + item.resultat_intervention + "</td>" +
+            `<td><a href='deleteinter/${item.id}'> <button class="item"
+                   onclick="return confirm('Confirmer la suppression');" data-toggle="tooltip" data-placement="top"
+                   title="Delete"><i class="fas fa-trash" style="color:red"></i></button></a></td>`
+
+          option.setAttribute('style', 'border: 1px solid black')
+          interventionsDataBox.appendChild(option)
+        })
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    })
+  })
+</script>
+{% endblock %}

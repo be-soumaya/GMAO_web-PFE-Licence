@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>Departement de maintenance HMT</title>
+    {%load static%}
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- CDNs -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    {% comment %}
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
+    {% endcomment %}
+
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/HMT-logo-bg.png'%}" rel="icon" />
+    <link
+      href="{% static 'assets/img/HMT-logo-bg.png'%}"
+      rel="apple-touch-icon"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets/css/style.css'%}" rel="stylesheet" />
+    <style>
+    body {
+
+      background: url("{% static 'assets/img/White-Gradient-Squares-Seamless-Patterns-For-Website-Backgrounds.jpg'%}") top left;
+  }
+    </style>
+  </head>
+
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top" style="top: 0">
+      <div class="container d-flex align-items-center">
+        <!--Uncomment below if you prefer to use an image logo -->
+        <a href="/home" class="logo mr-auto"
+          ><img
+            width="150"
+            height="50"
+            src="{% static 'assets/img/HMT-logo-bg.png'%}"
+            alt=""
+        /></a>
+
+        <nav class="nav-menu d-none d-lg-block">
+          <ul>
+            <li class="active"><a href="/home">Acceuil</a></li>
+            <li>
+              <i
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasRight"
+                aria-controls="offcanvasRight"
+                class="bx bxs-bell bx-tada-hover bx-sm"
+              ></i>
+            </li>
+
+            {% comment %}
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+                <button
+                  type="button"
+                  class="btn-close text-reset"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+            {% endcomment %}
+            <li class="drop-down">
+              {% firstof user.get_short_name user.get_username %}
+              <i class="fas fa-caret-down"></i>
+              <ul>
+                <li>
+                  <a href="/admin"
+                    ><i class="fas fa-user-cog"></i> Admin panel</a
+                  >
+                </li>
+                <li>
+                  <a href="/logout"
+                    ><i class="fas fa-sign-out-alt"></i> Deconnecter</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li><a href="/about">Á propos</a></li>
+          </ul>
+        </nav>
+        <!-- .nav-menu -->
+      </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex align-items-center" style="height: 500px">
+      <div class="container" data-aos="zoom-out" data-aos-delay="100">
+        <h1>Welcome to  <span> HMT Maintenance Departement</span></h1>
+      </div>
+    </section>
+    <!-- End Hero -->
+
+    <main id="main">
+      <!-- ======= Featured Services Section ======= -->
+      <section id="featured-services" class="featured-services">
+        <div class="container" data-aos="fade-up">
+          <div class="row" style="cursor: pointer">
+            <div
+              id="planning"
+              class="col-lg-4 col-md-6 d-flex align-items-stretch"
+              data-html="true"
+              data-toggle="popover"
+              data-placement="top"
+            >
+              <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
+                <div style="width: 320px; margin-left: 3.3cm" class="icon">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h4 style="text-align: center" class="title">Planning</h4>
+              </div>
+            </div>
+
+            <div style="display: none; max-width: 100%" id="popoverPlanning">
+              <a href="/planning_calendar" class="btn btn-outline-info">
+                Le planning annuel</a
+              >
+              <a href="/planning_consulter" class="btn btn-outline-secondary"
+                >Le planning de semaine
+              </a>
+            </div>
+            <a href="/historique">
+              <div
+                class="
+                  col-lg-4 col-md-6
+                  d-flex
+                  align-items-stretch
+                  mt-4 mt-lg-0
+                "
+              >
+                <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
+                  <div style="width: 320px; margin-left: 3.3cm" class="icon">
+                    <i class="bx bx-file"></i>
+                  </div>
+                  <h4 style="text-align: center" class="title">
+                    <a href="/historique">Historique des interventions</a>
+                  </h4>
+                </div>
+              </div>
+            </a>
+
+            <div
+              class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0"
+            >
+              <a href="/pdr_index">
+                <div class="icon-box" data-aos="fade-up" data-aos-delay="300">
+                  <div style="width: 320px; margin-left: 3.3cm" class="icon">
+                    <i class="fas fa-database"></i>
+                  </div>
+                  <h4 style="text-align: center" class="title">
+                    <a href="/pdr_index">Stock des PdRs</a>
+                  </h4>
+                </div>
+              </a>
+            </div>
+
+            <a href="/eq_index">
+              <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+                <div class="icon-box" data-aos="fade-up" data-aos-delay="400">
+                  <div style="width: 320px; margin-left: 3.2cm" class="icon">
+                    <i class="fas fa-tools"></i>
+                  </div>
+                  <h4 style="text-align: center" class="title">
+                    <a href="/eq_index">Équipements</a>
+                  </h4>
+                </div>
+              </div>
+            </a>
+            <a href="/indicateurs">
+              <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+                <div class="icon-box" data-aos="fade-up" data-aos-delay="400">
+                  <div style="width: 320px; margin-left: 3.1cm" class="icon">
+                    <i class="bx bx-tachometer"></i>
+                  </div>
+                  <h4 style="text-align: center" class="title">
+                    <a href="/indicateurs">Indicateurs</a>
+                  </h4>
+                </div>
+              </div>
+            </a>
+            <a href="/inter_ajouter">
+              <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+                <div class="icon-box" data-aos="fade-up" data-aos-delay="400">
+                  <div style="width: 320px; margin-left: 3.3cm" class="icon">
+                    <i class="fas fa-file-alt"></i>
+                  </div>
+                  <h4 style="text-align: center" class="title">
+                    <a href="/inter_ajouter">Déclarer une intervention</a>
+                  </h4>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+      <!-- End Featured Services Section -->
+
+ 
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+  
+      <div class="container py-4">
+        <div class="copyright">
+          &copy; Copyright <strong><span>2021</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+         Developed by <a href="https://www.linkedin.com/in/soumaya-el-belhadji-006154195/" target="blank">EL belhadji Soumaya</a> -<a href="https://www.linkedin.com/in/nada-rahmouni-7770a81ba" target="blank"> Rahmouni Nada </a>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+    <script>
+      $(function () {
+        // Enables popover
+        $("#planning").popover({
+          html: true,
+          content: function () {
+            return $("#popoverPlanning").html();
+          },
+        });
+      });
+    </script>
+    <!-- Vendor JS Files -->
+    <script src="{% static 'assets/vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/php-email-form/validate.js'%}"></script>
+    <script src="{% static 'assets/vendor/waypoints/jquery.waypoints.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/counterup/counterup.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/venobox/venobox.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/aos/aos.js'%}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'assets/js/main.js'%}"></script>
+  </body>
+</html>
