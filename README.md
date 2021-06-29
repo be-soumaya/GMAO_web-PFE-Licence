@@ -10,10 +10,7 @@ Setup project environment with [virtualenv](https://virtualenv.pypa.io) and [pip
 ```bash
 $ virtualenv project-env
 $ source project-env/bin/activate
-$ pip install -r https://raw.githubusercontent.com/juanifioren/django-project-template/master/requirements.txt
-
-# You may want to change the name `projectname`.
-$ django-admin startproject --template https://github.com/juanifioren/django-project-template/archive/master.zip projectname
+$ pip install -r https://github.com/souma-web/GMAO_web/blob/main/requirements.txt
 
 $ cd projectname/
 $ cp settings_custom.py.edit settings_custom.py
